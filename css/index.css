@@ -1,0 +1,270 @@
+body {
+    /* max-width: 800px; */
+    margin: 0 auto;
+}
+
+a:visited {
+    color: inherit;
+}
+
+a:hover {
+    color: var(--color--brand-hot-pink);
+}
+
+.icon-link:hover {
+    filter: invert(43%) sepia(97%) saturate(5877%) hue-rotate(322deg) brightness(101%) contrast(98%);
+}
+
+.icon {
+    filter: invert(43%) sepia(97%) saturate(5877%) hue-rotate( 322deg) brightness(101%) contrast(98%);
+}
+
+.Filter\(white\) {
+    filter: invert(95%) sepia(5%) saturate(22%) hue-rotate(162deg) brightness(105%) contrast(105%);
+}
+
+
+/* label {
+    width: 90px;
+    display: inline-block;
+    text-align: right;
+} */
+
+ul {
+    list-style: none;
+}
+
+form {
+    margin: 0 auto;
+}
+
+.B\(none\) {
+    border: none;
+}
+
+.Bdbc\(default\) {
+    border-bottom-style: solid;
+    border-bottom-color: var(--color--divider-primary);
+}
+
+.Bdtc\(default\) {
+    border-top-style: solid;
+    border-top-color: var(--color--divider-primary);
+}
+
+.Color\(secondary\) {
+    color: var(--secondaryColor);
+}
+
+.Color\(brandColor\) {
+    color: var(--brandColor);
+}
+
+.Color\(white\) {
+    color: white !important;
+}
+
+.Cur\(p\) {
+    cursor: pointer;
+}
+
+.Va\(m\) {
+    vertical-align: middle;
+}
+
+.Sq\(14px\) {
+    width: 14px;
+    height: 14px;
+}
+
+.D\(flex\) {
+    display: flex;
+}
+
+.D\(none\) {
+    display: none;
+}
+
+.Fw\(bold\) {
+    font-weight: bold;
+}
+
+.Fs\(normal\) {
+    font-size: 0.9rem;
+}
+
+.Align\(baseline\) {
+    align-items: baseline;
+}
+
+.Al\(center\) {
+    align-items: center;
+}
+
+.Al-s\(center\) {
+    align-self: center;
+}
+
+.Jc\(center\) {
+    justify-content: center;
+}
+
+.Jc\(space-between\) {
+    justify-content: space-between;
+}
+
+.Ji\(center\) {
+    justify-items: center;
+}
+
+.mt\(12px\) {
+    margin-top: 12px;
+}
+
+.mr\(12px\) {
+    margin-right: 12px;
+}
+
+.Bs\(border-box\) {
+    box-sizing: border-box;
+}
+
+.W\(100\%\) {
+    width: 100%;
+}
+
+.W\(33\%\) {
+    width: 33%;
+}
+
+.W\(30\%\) {
+    width: 30%;
+}
+
+.W\(75\%\) {
+    width: 75%;
+}
+
+.H\(100\%\) {
+    height: 100%;
+}
+
+.H\(60\%\) {
+    height: 60%;
+}
+
+.H\(40px\) {
+    height: 40px;
+}
+
+.Of\(scroll\) {
+    overflow: scroll;
+}
+
+.Of\(cover\) {
+    object-fit: cover;
+}
+
+.Ofy\(scroll\) {
+    overflow-y: scroll;
+}
+
+.Fd\(column\) {
+    flex-direction: column;
+}
+
+.Fd\(row\) {
+    flex-direction: row;
+}
+
+.Fw\(wrap\) {
+    flex-wrap: wrap;
+}
+
+.P\(abs\) {
+    position: absolute;
+}
+
+.P\(relative\) {
+    position: relative;
+}
+
+.Pd\(0\) {
+    padding: 0;
+}
+
+.B\(0\) {
+    bottom: 0;
+}
+
+.Pt\(10px\) {
+    padding-top: 10px;
+}
+
+.Pb\(10px\) {
+    padding-bottom: 10px;
+}
+
+.Pb\(50px\) {
+    padding-bottom: 50px
+}
+
+.Pl\(5\%\) {
+    padding-left: 5%;
+}
+
+.Pl\(10\%\) {
+    padding-left: 10%;
+}
+
+.Pr\(5\%\) {
+    padding-right: 5%;
+}
+
+.Rg\(3\%\) {
+    row-gap: 3%;
+}
+
+.R\(0\) {
+    right: 0;
+}
+
+.Rg\(15px\) {
+    row-gap: 15px;
+}
+
+.Rs\(none\) {
+    resize: none;
+}
+
+.Left\(50\%\) {
+    left: 50%;
+}
+
+.Ta\(center\) {
+    text-align: center;
+}
+
+.Td\(none\) {
+    text-decoration: none;
+}
+
+.Tt\(uppercase\) {
+    text-transform: uppercase;
+}
+
+.Tt\(capitalize\) {
+    text-transform: capitalize;
+}
+
+.Top\(50\%\) {
+    top: 50%;
+}
+
+.Margin\(0\) {
+    margin: 0;
+}
+
+.Us\(none\) {
+    user-select: none;
+}

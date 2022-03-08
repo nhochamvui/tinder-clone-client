@@ -1,4 +1,19 @@
-import { createApp } from 'vue'
-import App from './App.vue'
+import { initFacebookSdk } from './_helpers';
 
-createApp(App).mount('#app')
+import { createApp } from 'vue';
+import App from './App.vue';
+import router from './routers/index.js';
+import store from './store/store.js';
+import reactiveStorage from "vue-reactive-storage";
+
+function startApp(res) {
+    const app = createApp(App)
+        .use(router).use(store).mount('#app');
+    if (res) {
+        console.log('before set token: ', res)
+        app.setToken(res);
+    }
+}
+initFacebookSdk().then((res) => {
+    startApp(res);
+});
