@@ -13,9 +13,7 @@
         "axios": "^0.21.1",
         "console": "^0.7.2",
         "core-js": "^3.6.5",
-        "tailwindcss": "^2.2.19",
         "vue": "^3.0.0",
-        "vue-reactive-storage": "git+https://github.com/ropbla9/vue-reactive-storage.git",
         "vue-router": "^4.0.10",
         "vuex": "^4.0.2"
     },
