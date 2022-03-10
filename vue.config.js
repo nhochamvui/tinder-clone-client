@@ -9,5 +9,5 @@ module.exports = {
             cert: fs.readFileSync('./certs/dev_localhost.pem'),
         },
     },
-    publicPath: process.env.NODE_ENV === 'production' ? '/my-project/' : '/'
+    publicPath: process.env.NODE_ENV === 'production' ? '/tinderclonev2/' : '/'
 }
