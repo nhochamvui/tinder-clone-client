@@ -22,7 +22,7 @@
                 </li>
             </ul>
         </form> -->
-        <div class="login-section">
+        <div class="wrapper">
             <Image v-bind:altString="'tinder logo'" v-bind:imgSrc="'/tinder.ico'" v-bind:width="'36px'" v-bind:height="'36px'"/>
             <h1 class="heading">GET STARTED</h1>
             <p class="Ta(center) mb(12px)">By clicking Log In, you agree to our Terms. Learn how we process your data in our Privacy Policy and Cookie Policy.</p>
@@ -223,7 +223,7 @@ export default {
 </script>
 
 <style scoped>
-.login-section{
+.wrapper{
     margin-top: 20px;
     width: 60%;
     max-width: 500px;
