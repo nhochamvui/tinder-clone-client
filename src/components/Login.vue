@@ -22,7 +22,7 @@
                 </li>
             </ul>
         </form> -->
-        <div class="heading">
+        <div class="test">
             <div class="heading"></div>
             <Image v-bind:altString="'tinder logo'" v-bind:imgSrc="'/tinder.ico'" v-bind:width="'36px'" v-bind:height="'36px'"/>
             <h1 class="heading">GET STARTED</h1>
@@ -222,31 +222,10 @@ export default {
     },
 };
 </script>
-<style>
-.test{
-    margin-top: 20px;
-    width: 60%;
-    max-width: 500px;
-    height: 100%;
-    align-self: center;
-    justify-self: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-</style>
+
 <style scoped>
-.test{
-    margin-top: 20px;
-    width: 60%;
-    max-width: 500px;
-    height: 100%;
-    align-self: center;
-    justify-self: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+
+
 
 .heading{
     margin-top: 30px;
@@ -297,5 +276,17 @@ li {
 label {
     max-width: 50px;
     text-align: right;
+}
+
+.test{
+    margin-top: 20px;
+    width: 60%;
+    max-width: 500px;
+    height: 100%;
+    align-self: center;
+    justify-self: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 </style>
