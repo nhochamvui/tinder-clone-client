@@ -5,7 +5,7 @@
         v-bind:signup-data="signupData"
         v-on:submit="(e) => onSignupFormSubmit(e)"
     />
-    <div v-else class="D(flex) Fd(column) W(100%) H(100%) login__section">
+    <div v-else class="D(flex) Fd(column) W(100%) H(100%)">
         <!-- <h1>Login Page</h1>
         <form v-on:submit="onSubmit">
             <ul>
@@ -22,7 +22,7 @@
                 </li>
             </ul>
         </form> -->
-        <div class="test">
+        <div class="login-section">
             <Image v-bind:altString="'tinder logo'" v-bind:imgSrc="'/tinder.ico'" v-bind:width="'36px'" v-bind:height="'36px'"/>
             <h1 class="heading">GET STARTED</h1>
             <p class="Ta(center) mb(12px)">By clicking Log In, you agree to our Terms. Learn how we process your data in our Privacy Policy and Cookie Policy.</p>
@@ -222,24 +222,8 @@ export default {
 };
 </script>
 
-<style>
-.login__section{
-    margin-top: 20px;
-    width: 60%;
-    max-width: 500px;
-    height: 100%;
-    align-self: center;
-    justify-self: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-.login__section > hr{
-    margin-top: 30px;
-}
-</style>
 <style scoped>
-.test{
+.login-section{
     margin-top: 20px;
     width: 60%;
     max-width: 500px;
