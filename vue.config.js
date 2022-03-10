@@ -9,5 +9,5 @@ module.exports = {
             cert: fs.readFileSync('./certs/dev_localhost.pem'),
         },
     },
-    publicPath: process.env.NODE_ENV === 'production' ? '/tinderclonev2/' : '/'
+    publicPath: process.env.DEPLOY_SITE === 'netlify' && process.env.NODE_ENV === 'production' ? '/' : '/tinderclonev2/'
 }
