@@ -5,7 +5,7 @@
         v-bind:signup-data="signupData"
         v-on:submit="(e) => onSignupFormSubmit(e)"
     />
-    <div v-else class="D(flex) Fd(column) W(100%) H(100%)">
+    <div v-else class="D(flex) Fd(column) W(100%) H(100%) login__section">
         <!-- <h1>Login Page</h1>
         <form v-on:submit="onSubmit">
             <ul>
