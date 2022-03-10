@@ -17,7 +17,6 @@ const moduleUser = {
             state.user = {...payload.userInfo, token: payload.token };
         },
         unLoadUser(state) {
-            state.user = undefined;
             state.token = '';
         },
         SET_PROFILE_IMAGES(state, profileImages) {

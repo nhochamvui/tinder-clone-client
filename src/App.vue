@@ -100,20 +100,23 @@ export default {
         },
         token: {
             handler: async function (newValue) {
-                if (newValue != "") {
-                    console.log("new token: ", newValue);
+                console.log("new token: ", newValue);
+                if (newValue !== "") {
                     const isLoadedUser = await this.loadUser();
                     console.log('isLoadedUser:', isLoadedUser);
                     if (isLoadedUser && this.isUserAuthenticated) {
                         switch(isLoadedUser){
-                            // case 200:
-                            //     this.$router.push({ name: "MakeFriends" });
-                            //     break;
                             case 404:
                                 this.unLoadUser();
                                 break;
                         }
                     }
+                }
+                else{
+                   this.$router.push({
+                        name: "Authenticate",
+                        params: { action: "login" },
+                    }); 
                 }
             },
             immediate: true,

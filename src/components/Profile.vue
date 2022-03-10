@@ -99,6 +99,11 @@
         </div>
       </div>
     </div>
+    <div class="settings__container--location settings__box settings__text">
+      <div class="settings__box--row Al-s(center)">
+        <label v-on:click="doLogout" class="settings__text--primary link">Logout</label>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -142,7 +147,12 @@ export default {
       setDistancePrefCheck: "setDistancePrefCheck",
       setSettings: "setSettings",
       saveSettings: "saveSettings",
+      unLoadUser: "users/unLoadUser",
     }),
+    doLogout(){
+      FB.api("/me/permissions", "delete", null, async () => await FB.logout());
+      this.unLoadUser();
+    },
     onSetGenderClick: function(){
       console.log('click set gender')
       this.$emit('onSetGenderPrefClick')

@@ -300,7 +300,6 @@ const store = createStore({
                 switch (response.status) {
                     case 200:
                         console.log('response auth:', response)
-                            // localStorage.setItem("TinderClone/token", response.data);
                             // context.dispatch("users/setToken", response.data, { root: true });
                         return response.data;
                 }
