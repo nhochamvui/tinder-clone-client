@@ -125,6 +125,10 @@ form {
     margin-right: 12px;
 }
 
+.mb\(12px\) {
+    margin-bottom: 12px;
+}
+
 .Bs\(border-box\) {
     box-sizing: border-box;
 }

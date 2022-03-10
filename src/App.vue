@@ -170,7 +170,7 @@ section {
     height: 100%;
 }
 .right {
-    right: 75%;
+    width: 75%;
     max-height: 100%;
     display: flex;
     justify-content: center;

@@ -1,21 +1,24 @@
 <template>
+    <h1 class="heading">CREATE ACCOUNT</h1>
     <form class="container" v-on:submit="submit" method="post" v-bind:action="host">
         <TextField
             :label="'Full Name'"
             :hint="'Type your name'"
             :imageSrc="'/icon/user.png'"
+            v-bind:is-required="true"
             v-model:value.trim="name"
             v-model:error="errors.name"
         />
         <div class="select__box">
-            <label class="select__box-label Us(none)" for="">Gender</label>
+            <label class="select__box-label Us(none) D(flex) Fd(row)" for="">Gender <span style="color:red">*</span>
+                <span v-if="errors.gender" class="error-text" v-text="'*' + errors.gender"></span>
+            </label>
             <select v-model="gender">
                 <option disabled value="">Choose gender</option>
                 <option value="0">Male</option>
                 <option value="1">Female</option>
                 <option value="2">Other</option>
             </select>
-            <p v-if="errors.gender" class="error-text" v-text="'*' + errors.gender"></p>
         </div>
         <TextField
             :label="'Email Address'"
@@ -23,6 +26,7 @@
             :imageSrc="'/icon/email.png'"
             v-model:value.trim="email"
             v-model:error="errors.email"
+            v-bind:is-required="true"
             v-bind:verifyURL="host+'api/users/check/email'"
             v-bind:verifyFunction="isValidEmail"
             v-bind:verifyName="'Email'"
@@ -32,28 +36,30 @@
             v-model:month.trim="birthDay.month"
             v-model:year.trim="birthDay.year"
             v-bind:label="'Birthday'"
+            v-bind:is-required="true"
             v-model:error="errors.birthDay"
         />
         <div class="select__box">
-            <label class="select__box-label Us(none)" for="">Profile Photo</label>
-            <div class="img__container Bdr(5px) D(flex) Al-s(center)">
-                <input class="input__photo" 
-                v-on:change="photoInputChange" 
-                type="file" accept="image/png, image/jpeg"
-                ref="fileInput"
-                alt="input_photo">
-
+            <label class="select__box-label Us(none) D(flex) Fd(row)" for="">Profile Photo <span style="color:red">*</span>
+                <span v-if="errors.profilePhoto" class="error-text" v-text="'*' + errors.profilePhoto"></span>
+            </label>
+            <div class="W(100%) Bdr(5px) D(flex) Al-s(center) Jc(space-between)">
+                <label class="container__input Cur(p)">
+                    <input class="input__photo" 
+                    v-on:change="photoInputChange" 
+                    type="file" accept="image/png, image/jpeg"
+                    ref="fileInput"
+                    alt="input_photo">
+                    Upload Photo
+                </label>
                 <img v-bind:src="profileThumbnail"
                 class="Cur(p) Bdr(5px) img__add-photo Al-s(center)"
                 style="object-fit:cover"
                 v-on:click="$refs.fileInput.click()"
                 alt="profile_photo">
             </div>
-            <p v-if="errors.profilePhoto" class="error-text" v-text="'*' + errors.profilePhoto"></p>
         </div>
-        <p>
-            <input type="submit" >
-        </p>
+        <input class="button Cur(p) Al-s(center)" type="submit" >
     </form>
 </template>
 
@@ -77,7 +83,7 @@ export default {
             gender: this.signupData.gender ? this.convertToGenderCode(this.signupData.gender) : '',
             birthDay: this.convertToBirthday(this.signupData.birthday),
             profilePhoto: null,
-            profileThumbnail: '/icon/add.svg',
+            profileThumbnail: '/img/default-photo.jpg',
             errors: {
                 name: null,
                 gender: null,
@@ -223,16 +229,40 @@ export default {
 .error-text{
     color: red;
     text-align: right;
+    font-weight: normal;
+    font-size: small;
+    margin-left: auto;
 }
 </style>
 <style scoped>
+    .heading{
+        margin-top: 30px;
+        text-align: center;
+        font-style: italic;
+    }
+    .button{
+        width: 100px;
+        min-height: 40px;
+        border-radius: 100px;
+        background-color: white;
+        margin-top: 5px;
+        margin-bottom: 10px;
+        border: gray 1px solid;
+        color: gray;
+        font-size: 0.9rem;
+    }
+
+    .button:hover{
+        border: black 1px solid;
+        color: black;
+    }
     .container{
         display: flex;
         flex-direction: column;
-        gap: 50px;
+        gap: 20px;
         width: 80%;
         max-width: 500px;
-        margin-top: 50px;
+        margin-top: 30px;
     }
     .select__box{
         display: flex;
@@ -252,8 +282,39 @@ export default {
         font-weight: bold;
         font-size: 0.96rem;
     }
+
+    .img__add-photo{
+        width: 50px;
+        height: 50px;
+    }
+
+    .img__add-photo:hover{
+        border: black 1px solid;
+    }
+
+    .container__input{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        align-self: center;
+        border-radius: 5px;
+        background-color: blue;
+        width: 100%;
+        height: 48px;
+        margin-right: 10px;
+        background-color: white;
+        border: gray 2px solid;
+        font-size: 1rem;
+    }
+
+    .container__input:hover{
+        border: black 2px solid;
+    }
+
     .input__photo{
         display: inline;
+        opacity: 0;
+        width: 0;
     }
     .Bdr\(5px\){
         border-radius: 5px;
@@ -268,6 +329,6 @@ export default {
     }
     .img__container > img{
         height: 80%;
-        min-width: 100px;
+        max-width: 100px;
     }
 </style>

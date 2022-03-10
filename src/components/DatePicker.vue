@@ -1,6 +1,12 @@
 <template>
     <div class="date__picker-container">
-        <label class="Us(none)">{{ label }}</label>
+        <label class="Us(none) D(flex) Fd(row)">{{ label }} <span v-if="isRequired" style="color:red">*</span>
+        <span
+            class="error-text"
+            v-if="error || subError"
+            v-text="subError ? '*' + subError : '*' + error"
+        ></span>
+        </label>
         <!-- <select v-bind:value="day" :disabled="month==null" v-on:change="$emit('update:day', $event.target.value)">DD
             <option v-for="i in days[parseInt(month)-1]" v-bind:key="i" v-text="i <= 9 ? '0'+i.toString() : i"></option>
         </select>
@@ -41,18 +47,13 @@
                 v-on:change="changeYear"
             />
         </div>
-        <p
-            class="error-text"
-            v-if="error || subError"
-            v-text="subError ? '*' + subError : '*' + error"
-        ></p>
     </div>
 </template>
 
 <script>
 export default {
     name: "DatePicker",
-    props: ["day", "month", "year", "label", "error"],
+    props: ["day", "month", "year", "label", "error", "isRequired"],
     emits: ["update:day", "update:month", "update:year"],
     data() {
         return {

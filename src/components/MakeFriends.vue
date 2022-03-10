@@ -1,6 +1,22 @@
 <template>
   <div class="makefriend-body" ref="body">
-    <div v-if="people.length > 0">
+    <Modal
+      v-on:close="onModalClose"
+      v-if="showModal"
+    >
+      <template v-slot:body>
+        <img class="mini__avatar" v-bind:src="me.profileImages.find(e => e !== '')"  alt="my-avatar">
+        <img class="mini__avatar object-avatar" v-bind:src="currentMatchProfileImage"  alt="others-avatar">
+        <span class="congrats-text" v-text="currentMatchName !== ''? currentMatchName + ' likes you too!' : 'Someone likes you too!'"></span>
+        <h1 class="its-a-match">IT'S A MATCH!!</h1>
+      </template>
+      <template v-slot:footer>
+        <button type="button" class="button__message" @click="openChat">
+          Messaging
+        </button>
+      </template>
+    </Modal>
+    <div class="W(100%) H(100%) D(flex) Jc(center) Al(center)" v-if="people.length > 0">
       <PeopleHolder
         v-for="person of people"
         v-bind:key="person.id"
@@ -11,7 +27,7 @@
       >
       </PeopleHolder>
     </div>
-    <div class="P(relative) W(100%) H(100%)" v-else>
+    <div class="P(relative) W(100%) H(100%)" v-else-if="!showModal">
       <div class="D(flex) P(abs) Top(50%) Left(50%)" style="transform: translate(-50%, -50%);">
         <svg class="radar-circle">
           <circle cx="50%" cy="50%" r="0" fill-opacity="0" fill="#fa6f6880" stroke="#fa6f6880" stroke-width="2px" stroke-opacity="1">
@@ -42,17 +58,23 @@
 <script>
 import PeopleHolder from "./PeopleHolder.vue";
 import { mapActions, mapGetters } from "vuex";
+import Modal from "./Modal.vue";
 import Image from "./Image.vue";
 export default {
   name: "MakeFriends",
   components: {
     PeopleHolder: PeopleHolder,
-    Image
+    Image,
+    Modal,
   },
   data() {
     return {
       people: [],
       isPersonalData: false,
+      showModal: false,
+      currentMatchName: '',
+      currentMatchProfileImage: '',
+      currentMatchID: '',
     };
   },
   computed: {
@@ -124,17 +146,28 @@ export default {
       doLikePerson: "users/likePerson",
       setDocument: "setDocument",
     }),
+    onModalClose(){
+      this.showModal = false;
+    },
     async getMyProfile() {
       return this.userGetter();
     },
     fetchPeople() {
       this.getNewSuggestedPeople();
     },
-    onLikeClick() {
+    onLikeClick(match) {
+      debugger
+      this.currentMatchName = match.name;
+      this.currentMatchProfileImage = match.profileImages.find(e => e !== '');
+      this.currentMatchID = match.id;
+      this.showModal = true;
       this.people.pop();
     },
     onDislikeClick() {
       this.people.pop();
+    },
+    openChat(){
+      this.$router.push({ name: "Messages", params: {matchID: this.currentMatchID} });
     },
   },
   mounted: async function () {
@@ -155,6 +188,75 @@ export default {
 </script>
 
 <style scoped>
+.button__message{
+    width: 100px;
+    min-height: 40px;
+    border-radius: 100px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    background: linear-gradient(262deg, #ff7854, #fd267d);
+    color: white;
+    border: none;
+}
+.button__message:hover{
+    background: white;
+    color: black;
+    border: black 1px solid;
+}
+.heading{
+    text-align: center;
+    font-style: italic;
+}
+.its-a-match{
+    position: absolute;
+    font-style: italic;
+    bottom: 5%;
+    font-size: 2.3rem;
+    animation-name: itsamatch;
+    animation-duration: 0.5s;
+    animation-timing-function: ease-out;
+    text-shadow: 1px -1px #FF0000;
+}
+.object-avatar{
+    opacity: 0;
+    animation: ojectavataranim 1s ease-out 1s forwards;
+}
+
+@keyframes itsamatch {
+    from {
+        font-size: 20rem;
+        text-shadow: 20px -20px #FF0000;
+    }
+    to {font-size: 5rem;
+        text-shadow: 20px -20px #FF0000;
+    }
+}
+@keyframes ojectavataranim {
+    from {
+        transform: scale(0.1);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+.mini__avatar{
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: white 2px solid;
+    box-shadow: 0 2px 5px 0 rgb(0 0 0 / 28%);
+}
+
+.congrats-text{
+    opacity: 0;
+    position: absolute;
+    bottom: 50%;
+    animation: ojectavataranim 1s ease-out 1s forwards;
+}
+/********
+********/
+
 .radar-circle{
   width: 400px;
   height: 400px;

@@ -5,8 +5,8 @@
         v-bind:signup-data="signupData"
         v-on:submit="(e) => onSignupFormSubmit(e)"
     />
-    <div v-else>
-        <h1>Login Page</h1>
+    <div v-else class="D(flex) Fd(column) W(100%) H(100%)">
+        <!-- <h1>Login Page</h1>
         <form v-on:submit="onSubmit">
             <ul>
                 <li>
@@ -21,20 +21,48 @@
                     <input type="submit" title="Login" />
                 </li>
             </ul>
-        </form>
-        <button
-            @click="loginFB"
-            v-text="fbAccessToken ? 'Log out' : 'Login with Facebook'"
-        ></button>
+        </form> -->
+        <div class="login__section">
+            <Image v-bind:altString="'tinder logo'" v-bind:imgSrc="'/tinder.ico'" v-bind:width="'36px'" v-bind:height="'36px'"/>
+            <h1 class="heading">GET STARTED</h1>
+            <p class="Ta(center) mb(12px)">By clicking Log In, you agree to our Terms. Learn how we process your data in our Privacy Policy and Cookie Policy.</p>
+            <button
+                class="button D(flex) Fd(row) Al(center) Cur(p)"
+            >
+                <span class="button__icon">
+                    <img src="/icon/google-logo.svg" alt="google logo">
+                </span>
+                <span class="button__label">LOGIN WITH GOOGLE</span>
+            </button>
+            <button
+                class="button D(flex) Fd(row) Al(center) Cur(p)"
+                @click="loginFB"
+            >
+                <span class="button__icon">
+                    <img src="/icon/facebook-logo.svg" alt="facebook logo">
+                </span>
+                <span class="button__label">LOGIN WITH FACEBOOK</span>
+            </button>
+            <hr class="W(100%)">
+            <h1 class="heading">COMING SOON IN 2023!</h1>
+            <div class="D(flex) W(100%) Fd(row) Jc(space-between) Al(center)">
+                <Image v-bind:altString="'app store logo'" v-bind:imgSrc="'/img/appstore-logo.png'" style="height:48px;object-fit:contain"/>
+                <Image v-bind:altString="'app store logo'" v-bind:imgSrc="'/img/googleplay-logo.png'" style="height:70px;object-fit:contain"/>
+            </div>
+        </div>
+        
     </div>
 </template>
 <script >
 import { ref } from "vue";
 import axios from "axios";
+import Image from "./Image.vue"
 import { mapActions, mapGetters } from "vuex";
 export default {
     name: "Login",
-    components: {},
+    components: {
+        Image
+    },
     setup() {
         const loginInfo = ref({
             user_name: "unclebob",
@@ -195,6 +223,58 @@ export default {
 </script>
 
 <style scoped>
+.login__section{
+    margin-top: 20px;
+    width: 60%;
+    max-width: 500px;
+    height: 100%;
+    align-self: center;
+    justify-self: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.login__section > hr{
+    margin-top: 30px;
+}
+
+.heading{
+    margin-top: 30px;
+    text-align: center;
+    font-style: italic;
+}
+
+.button{
+    width: 315px;
+    min-height: 54px;
+    border-radius: 100px;
+    background-color: white;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: gray 1px solid;
+    color: gray;
+}
+
+.button:hover{
+    border: black 1px solid;
+    color: black;
+}
+
+.button__icon{
+    width: 15%;
+}
+
+.button__label{
+    width: 75%;
+    font-size: 0.85rem;
+}
+
+@media screen and (max-width: 500px) {
+    .button{
+        width: 75% !important;
+    }
+}
+
 input[type="submit"] {
     float: right;
 }

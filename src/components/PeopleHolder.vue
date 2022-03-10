@@ -80,7 +80,9 @@
                 <span>Edit Info</span>
             </router-link>
         </div>
+        
     </div>
+    
 </template>
 
 <script>
@@ -102,6 +104,8 @@ export default {
             iconNextArrow,
             iconLocation,
             photoIndex: -1,
+            currentMatchName: '',
+            currentMatchID: '',
             // person: this.isPersonalData ? this.getMe() : this.personData,
             nextArrowHover: false,
             backArrowHover: false,
@@ -109,6 +113,7 @@ export default {
             likeCountStatus: null,
             BASE_PHOTO_URL:
                 this.$store.state.hostURL + this.$store.state.hostPhotosURL,
+            showModal: false,
         }
     },
     props: {
@@ -118,12 +123,18 @@ export default {
     methods: {
         ...mapActions({
             doLikePerson: 'users/likePerson',
+            setNewMatch: 'setNewMatch',
         }),
         ...mapGetters({
             getDocument: "getDocument",
             getMe: "users/getMe",
             isLoadedRequirements: "isLoadedRequirements",
         }),
+        openChat(){
+            if(this.currentMatchID !== ''){
+                this.$router.push({ name: 'Messages', params: {matchID: this.currentMatchID} });
+            }
+        },
         dragCard(refName){
             let dragElement = this.$refs[refName];
             let document = this.getDocument();
@@ -214,8 +225,14 @@ export default {
             return this.photoIndex;
         },
         async onLikeClick(){
-            let result = await this.doLikePerson(this.person.id);
-            this.$emit('onLikeClick', this.person.id);
+            let result = await this.doLikePerson(this.person.userID);
+            if(result && result.isMatched){
+                this.showModal = true;
+                this.setNewMatch(result.match);
+                this.currentMatchName = result.match.name;
+                this.currentMatchID = this.person.userID;
+            }
+            this.$emit('onLikeClick', result.match);
 
             // if(result == 113){
             //     return this.isNotEnoughLikeCount = true;
@@ -244,6 +261,9 @@ export default {
                 this.backArrowHover = false;
             }
         },
+        onModalClose(){
+            this.showModal = false;
+        }
     },
     computed: {
         person: {

@@ -66,6 +66,10 @@ const store = createStore({
             console.log('set matches: ', matches);
             state.matches = matches;
         },
+        ADD_NEW_MATCH(state, match) {
+            console.log('set new match: ', match);
+            state.matches.unshift(match);
+        },
         SET_SETTINGS(state, settings) {
             state.settings = settings;
             console.log('set setting: ', state.settings);
@@ -200,6 +204,9 @@ const store = createStore({
                 console.log('error while get matches: ', err);
             }
         },
+        setNewMatch(context, payload) {
+            context.commit('ADD_NEW_MATCH', payload);
+        },
         async fetchSettings(context) {
             try {
                 let response = await axios.get(process.env.VUE_APP_HOST_URL + '/api/users/discoverysettings', {
@@ -308,7 +315,6 @@ const store = createStore({
                 for (const property in data) {
                     bodyFormData.append(property.toString(), data[property]);
                 }
-                debugger
                 let response = await axios.post(process.env.VUE_APP_HOST_URL + '/api/users/fbsignup', bodyFormData);
                 switch (response.status) {
                     case 200:

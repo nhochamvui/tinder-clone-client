@@ -4,7 +4,6 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import router from './routers/index.js';
 import store from './store/store.js';
-import reactiveStorage from "vue-reactive-storage";
 
 function startApp(res) {
     const app = createApp(App)

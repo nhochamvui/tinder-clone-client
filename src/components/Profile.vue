@@ -1,7 +1,7 @@
 <template>
   <div
+    v-on:mouseup="e => mouseUpEvent(e)"
     v-on:mousemove="mouseMoveEvent"
-    v-on:mouseup="mouseUpEvent"
     v-if="this.discoverySettingsGetSet != null && this.discoverySettingsGetSet.length != 0"
     class="settings__container"
   >
@@ -29,18 +29,13 @@
           v-text="distancePref + ' km'"
         ></span>
       </div>
-      <div
-        class="margin-top-bottom"
-        v-on:mousedown="(e) => {mouseDownEvent(e, 'distance-divider', 'distance-tracker', 
-        {sliderName: 'distance-slider', indicatorPrefName: 'distancePref'},)}"
-        id="divider"
+      <input class="slider2" type="range"
+        v-bind:value="distancePref"
+        v-bind:style="'background-size: ' + (distancePref - distancePrefMin)*100/(distancePrefMax - distancePrefMin) + '% 100%'"
+        v-on:input="onSliderChange"
+        v-on:mouseup="onMouseUp"
+        v-bind:min="distancePrefMin" v-bind:max="distancePrefMax"
       >
-        <div class="settings__distance--slider">
-          <div ref="distance-divider" class="settings__distance--divider"></div>
-          <button ref="distance-slider" class="slider"></button>
-          <div ref="distance-tracker" class="tracker"></div>
-        </div>
-      </div>
       <div class="settings__box--row">
         <label class="settings__text--primary" for=""
           >Only show people in this range</label
@@ -118,6 +113,8 @@ export default {
       me: {},
       isMouseDown: false,
       distancePreference: 2,
+      distancePrefMin: 2,
+      distancePrefMax: 100,
       genderPreference: 0,
       currentSliderName: '',
       currentStartSliderName: '',
@@ -149,6 +146,16 @@ export default {
     onSetGenderClick: function(){
       console.log('click set gender')
       this.$emit('onSetGenderPrefClick')
+    },
+    onSliderChange: function(e){
+      let target = e.target;
+      this.distancePref = target.value;
+    },
+    onMouseUp: function(e){
+      let delaySecond = 1000;
+      setTimeout(()=>{
+        this.saveSettings();
+      }, delaySecond);
     },
     mouseDownEvent: function (e, dividerName, trackerName, sliderRefStart, sliderRefEnd, minIndicatorValue = -1, maxIndicatorValue = -1, minDeltaValue = -1) {
       let slider = null;
@@ -197,18 +204,28 @@ export default {
       let borderColor = "#fd546c";
       slider.style.borderColor = borderColor;
       this.isMouseDown = true;
-    },
-    mouseUpEvent: function () {
+
       let currentSlider = this.$refs[this.currentSliderNameGetSet];
-      if(currentSlider !== undefined){
-        this.isMouseDown = false;
-        currentSlider.style.borderColor = "";
+      let mouseX = e.clientX;
+      console.log(mouseX)
+      currentSlider.style.marginLeft = "" + (mouseX-currentSlider.offsetWidth) + "px";
+      tracker.style.width = mouseX + "px";
+    },
+    mouseUpEvent: function (e) {
+      if(!this.isMouseDown){
+        return;
       }
-      let delaySecond = 1000;
-      setTimeout(()=>{
-        console.log('here')
-        this.saveSettings();
-      }, delaySecond)
+
+      // let currentSlider = this.$refs[this.currentSliderNameGetSet];
+      // if(currentSlider !== undefined){
+      //   this.isMouseDown = false;
+      //   currentSlider.style.borderColor = "";
+      // }
+      // let delaySecond = 1000;
+      // setTimeout(()=>{
+      //   console.log('here1')
+      //   this.saveSettings();
+      // }, delaySecond)
     },
     mouseMoveEvent: function (e) {
       if(this.isMouseDown){
@@ -266,7 +283,7 @@ export default {
         else{
           // set slider and tracker pos
           this[this.currentIndicatorPrefName] = indicatorValue;
-          currentSlider.style.marginLeft = "" + mouseX + "px";
+          currentSlider.style.marginLeft = "" + (mouseX-currentSlider.offsetWidth) + "px";
           tracker.style.width = mouseX + "px";
         }
       }
@@ -559,6 +576,64 @@ export default {
   padding-left: 4%;
   padding-right: 4%;
 }
+.slider2{
+  margin-top: 6%;
+  margin-bottom: 6%;
+  -webkit-appearance: none;
+  height: 2px;
+  border-radius: 5px;
+  background: #d3d3d3;
+  outline: none;
+  background-repeat: no-repeat;
+  background-image: linear-gradient(#ff4500, #ff4500);
+  background-size: 70% 100%;
+}
+.slider2::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: #e6eaf0 solid 1.2px;
+  background-color: #fff;
+  box-shadow: 0 2px 6px 0 rgb(102 113 128 / 14%);
+  cursor: grab;
+}
+
+.slider2::-moz-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: #e6eaf0 solid 1.2px;
+  background-color: #fff;
+  box-shadow: 0 2px 6px 0 rgb(102 113 128 / 14%);
+  cursor: grab;
+}
+
+.slider2::-webkit-slider-thumb:hover{
+  border: #fd546c solid 1px;
+}
+
+.slider2::-moz-slider-thumb:hover{
+  border: #fd546c solid 1px;
+}
+
+.slider2::-webkit-slider-runnable-track{
+  -webkit-appearance: none;
+  box-shadow: none;
+  border: none;
+  background: transparent;
+}
+
+.slider2::-moz-range-track{
+  -webkit-appearance: none;
+  box-shadow: none;
+  border: none;
+  background: transparent;
+}
+
 .slider {
   width: 28px;
   height: 28px;

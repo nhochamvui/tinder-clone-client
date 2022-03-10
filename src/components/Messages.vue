@@ -26,7 +26,7 @@
           >SEND</button>
       </div>
     </div>
-    <h1 v-else class="Us(none) W(100%) Ta(center)">Don't let your match waiting... Text them first!</h1>
+    <h1 v-else class="Us(none) W(100%) Ta(center) Al(center)">Don't let your match waiting... Text them first!</h1>
     <div v-if="matchId">
     </div>  
   </div>

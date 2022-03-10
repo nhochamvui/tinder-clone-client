@@ -1,6 +1,12 @@
 <template>
     <div class="texfield__container">
-        <label class="Us(none)">{{ label }}</label>
+        <label class="Us(none) D(flex) Fd(row)">{{ label }} <span v-if="isRequired" style="color:red">*</span>
+        <span
+            class="error-text"
+            v-if="error || subError"
+            v-text="subError ? '*' + subError : '*' + error"
+        ></span>
+        </label>
         <div class="wrapper">
             <img
                 class="Us(none)"
@@ -16,11 +22,6 @@
                 v-on:change="onChange"
             />
         </div>
-        <p
-            class="error-text"
-            v-if="error || subError"
-            v-text="subError ? '*' + subError : '*' + error"
-        ></p>
     </div>
     <!-- <div>{{ input }}</div> -->
 </template>
@@ -39,6 +40,7 @@ export default {
         verifyURL: String,
         verifyFunction: Function,
         verifyName: String,
+        isRequired: Boolean,
     },
     emits: ["update:value"],
     data() {
@@ -109,8 +111,7 @@ input {
     outline: none;
     background-color: var(--color--empty-background2);
     padding-left: 20px;
-    min-width: 300px;
-    max-width: 400px;
+    width: 100%;
 }
 img {
     filter: invert(98%) sepia(1%) saturate(2580%) hue-rotate(181deg)
