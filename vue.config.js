@@ -10,5 +10,5 @@ module.exports = {
         },
     },
     // publicPath: process.env.NODE_ENV === 'production' ? '/tindercloneclient/' : '/',
-    publicPath: process.env.DEPLOY_SITE === 'netlify' && process.env.NODE_ENV === 'production' ? '/tindercloneclient/' : '/',
+    publicPath: process.env.DEPLOY_SITE === 'github' && process.env.NODE_ENV === 'production' ? '/tindercloneclient/' : '/',
 }
