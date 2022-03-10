@@ -61,7 +61,7 @@ export default {
         },
         onLoad(e) {
             try {
-                // console.log("onLoad: ", this.imgSrc);
+                console.log("onLoad: ", this.imgSrc);
             } catch (e) {
                 console.log('onload ex: ', e)
             }

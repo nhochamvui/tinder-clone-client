@@ -182,7 +182,7 @@ export default {
             handler: function(newVal){
                 if(newVal && newVal.profileImages){
                     console.log('me changed: ', newVal.profileImages)
-                    this.bgImage = newVal.profileImages.find(e => e !== '');
+                    this.bgImage = newVal.profileImages.find(e => e !== '') || '/img/default_profile_picture.jpg';
                 }
             },
             deep: true,

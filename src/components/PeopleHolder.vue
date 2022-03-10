@@ -424,9 +424,6 @@ h2, h3{
     position: absolute;
     box-shadow: 0px 0px 14px 1px rgb(0 0 0 / 20%);
 }
-.people-card:only-child{
-    /* color: #505965; */
-}
 .dragable{
     position: absolute;
     animation-duration: 1s;
