@@ -222,7 +222,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .login__section{
     margin-top: 20px;
     width: 60%;
@@ -237,6 +237,9 @@ export default {
 .login__section > hr{
     margin-top: 30px;
 }
+</style>
+<style scoped>
+
 
 .heading{
     margin-top: 30px;
