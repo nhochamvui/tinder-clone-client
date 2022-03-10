@@ -22,7 +22,7 @@
                 </li>
             </ul>
         </form> -->
-        <div class="login__section">
+        <div class="test">
             <Image v-bind:altString="'tinder logo'" v-bind:imgSrc="'/tinder.ico'" v-bind:width="'36px'" v-bind:height="'36px'"/>
             <h1 class="heading">GET STARTED</h1>
             <p class="Ta(center) mb(12px)">By clicking Log In, you agree to our Terms. Learn how we process your data in our Privacy Policy and Cookie Policy.</p>
@@ -239,7 +239,17 @@ export default {
 }
 </style>
 <style scoped>
-
+.test{
+    margin-top: 20px;
+    width: 60%;
+    max-width: 500px;
+    height: 100%;
+    align-self: center;
+    justify-self: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
 .heading{
     margin-top: 30px;
