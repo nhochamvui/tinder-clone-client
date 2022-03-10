@@ -221,7 +221,19 @@ export default {
     },
 };
 </script>
-
+<style>
+.test{
+    margin-top: 20px;
+    width: 60%;
+    max-width: 500px;
+    height: 100%;
+    align-self: center;
+    justify-self: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+</style>
 <style scoped>
 .test{
     margin-top: 20px;
