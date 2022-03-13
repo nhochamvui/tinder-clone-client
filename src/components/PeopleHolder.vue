@@ -5,12 +5,16 @@
         :class="{ 'people-card': !isPersonalInfo, 
         'people-card people-card-detail': isPersonalInfo}" 
     >
+        <a v-if="showMore" style="z-index:1;right:50px" class="P(abs) B(0)" @click="showMore = false">
+            <img style="width:30px" src="/icon/collapse.svg" alt="">            
+        </a>
         <router-view v-if="isLoadedRequirements()"></router-view>
         <div class="info-container" v-if="['MakeFriends', 'Profile', 'SetGender'].includes(routeName)">
-            <div class="D(flex) W(100) Pb(50px) H(100) Of(scroll) Fd(column)">
+            <div class="D(flex) W(100) Pb(50px) H(100) Of(scroll) Fd(column)" 
+                >
                 <div  class="W(100)">
                     <div ref="card"
-                        :class="{'dragable': routeName == 'MakeFriends', 'background': !isPersonalInfo, 'background-detail': isPersonalInfo}"
+                        :class="{'dragable': routeName == 'MakeFriends' && !showMore, 'detail': showMore, 'background': !isPersonalInfo, 'background-detail': isPersonalInfo}"
                         v-bind:style="backgroundImage"
                     >
                         <div class="arrow-button Cur(p) Pos(l0) Us(none)"
@@ -27,7 +31,10 @@
                             <img v-bind:src="iconNextArrow" 
                                 v-if="nextArrowHover" alt="next">
                         </div>
-                        <div v-if="routeName == 'MakeFriends'" class="info Pl(5%)">
+                        <div v-if="routeName == 'MakeFriends' && !showMore" class="info Pl(5%)">
+                            <a class="P(abs)" style="top:10px;right:50px" v-if="routeName === 'MakeFriends'" @click="showMore = !showMore">
+                                <img style="width:30px;transform: rotate(180deg);" src="/icon/expand.svg" alt="">            
+                            </a>
                             <span class="row">
                                 <h2 class="Color(white)" v-if="person.name">{{ person.name }}</h2><h3 class="Color(white)" v-if="person.age">{{ '  '+ person.age }}</h3>
                             </span>
@@ -44,7 +51,7 @@
                     </div>
                 </div>
                 <div>
-                    <div v-if="['Profile', 'ProfileEdit', 'SetGender'].includes(routeName)">
+                    <div v-if="['Profile', 'ProfileEdit', 'SetGender'].includes(routeName) || showMore">
                         <div class="myInfo Pl(10%) Bs(border-box)">
                             <span class="row">
                                 <h2 v-if="person.name">{{ person.name }}</h2><h3 v-if="person.age">{{ '  '+ person.age }}</h3>
@@ -63,12 +70,20 @@
                             <span class="D(flex) Align(baseline) row info-text" v-if="person.about">{{ person.about }}</span>
                         </div>
                     </div>
-                    <div v-if="routeName == 'MakeFriends'" class="tools-container">
-                        <button class="normal-button Us(none)">Previous</button>
-                        <button class="special-button Us(none)" v-on:click="onDislikeClick()">Dislike</button>
-                        <button class="normal-button Us(none)">Super Like</button>
-                        <button class="special-button Us(none)" v-on:click="onLikeClick()">Like</button>
-                        <button class="normal-button Us(none)">Skip</button>
+                    <div v-if="routeName == 'MakeFriends' && !showMore" class="tools-container">
+                        <button style="border-color:#106bd5" class="normal-button Us(none)">
+                            <img style="max-width:24px" src="/icon/repeat.svg" alt="">
+                        </button>
+                        <button style="border-color:#fd546c" class="special-button Us(none)" v-on:click="onDislikeClick()">
+                            <img style="max-width:24px" src="/icon/dislike.svg" alt="">
+                        </button>
+                        <!-- <button class="normal-button Us(none)">Super Like</button> -->
+                        <button style="border-color:#2df187" class="special-button Us(none)" v-on:click="onLikeClick()">
+                            <img style="max-width:24px" src="/icon/like.svg" alt="">
+                        </button>
+                        <button style="border-color:#7b05ba" class="normal-button Us(none)">
+                            <img style="max-width:24px" src="/icon/skip.svg" alt="">
+                        </button>
                     </div>
                 </div>
             </div>
@@ -114,6 +129,7 @@ export default {
             BASE_PHOTO_URL:
                 this.$store.state.hostURL + this.$store.state.hostPhotosURL,
             showModal: false,
+            showMore: false,
         }
     },
     props: {
@@ -412,6 +428,18 @@ h2, h3{
     border: rgb(221, 217, 217) solid 1px;
     box-shadow: 0px 0px 14px 1px rgb(0 0 0 / 20%);
 }
+.detail{
+    max-height: calc(100vh * 0.85 - 40px * 0.85);
+    height: calc(667px * 0.85);
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border: rgb(221, 217, 217) solid 1px;
+    box-shadow: 0px 0px 14px 1px rgb(0 0 0 / 20%);
+}
 .people-card{
     display: flex;
     align-items: center;
@@ -457,13 +485,13 @@ img{
     width: 100%;
     display: flex;
     flex-direction: row;
+    justify-content: space-around;
     position: absolute;
     bottom: 0;
     align-items: center;
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;
-    /* background: rgb(0,0,0);
-    background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 27%, rgba(142,138,138,1) 100%); */
+    margin-bottom: 10px;
 }
 .info{
     position: absolute;
@@ -482,6 +510,7 @@ img{
     position: relative;
     overflow: hidden;
     box-sizing: border-box;
+    border-radius: 10px;
 }
 .myInfo{
     padding-left: 5%;
@@ -515,15 +544,14 @@ img{
     left: 0;
 }
 .special-button{
-    width: 22.5%;
-    height: 84px;
+    min-width: 78px;
     border-radius: 50%;
+    aspect-ratio: 1/1;
 }
 .normal-button{
-    width: 18.33%;
-    height: 68px;
-    min-height: 68px;
+    min-width: 60px;
     border-radius: 50%;
+    aspect-ratio: 1/1;
 }
 button{
     border: white solid 1px;
