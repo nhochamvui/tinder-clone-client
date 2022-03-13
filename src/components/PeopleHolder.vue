@@ -8,7 +8,7 @@
         <router-view v-if="isLoadedRequirements()"></router-view>
         <div class="info-container" v-if="['MakeFriends', 'Profile', 'SetGender'].includes(routeName)">
             <div class="D(flex) W(100) Pb(50px) H(100) Of(scroll) Fd(column)">
-                <div  class="W(100) H(100)">
+                <div  class="W(100)">
                     <div ref="card"
                         :class="{'dragable': routeName == 'MakeFriends', 'background': !isPersonalInfo, 'background-detail': isPersonalInfo}"
                         v-bind:style="backgroundImage"
