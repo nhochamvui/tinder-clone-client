@@ -4,6 +4,10 @@ import axios from 'axios';
 import { Console } from 'console';
 import { userInfo } from 'os';
 const signalR = require('@microsoft/signalr');
+window.addEventListener('resize', () => {
+    store.dispatch('setWindowWidth');
+});
+
 const store = createStore({
     state: {
         // makeFriends: this.$route.
@@ -54,6 +58,7 @@ const store = createStore({
         latestMessages: [],
         connection: null,
         document: null,
+        windowWidth: window.innerWidth,
     },
     mutations: {
         SET_DOCUMENT(state, element) {
@@ -153,8 +158,14 @@ const store = createStore({
         getHostPhotosURL(state) {
             return state.hostURL + state.hostPhotosURL;
         },
+        getWindowWidth(state) {
+            return state.windowWidth;
+        },
     },
     actions: {
+        setWindowWidth(context) {
+            this.state.windowWidth = window.innerWidth;
+        },
         setDocument(context, element) {
             context.commit('SET_DOCUMENT', element);
         },

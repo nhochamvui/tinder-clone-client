@@ -77,7 +77,31 @@ const routes = [{
             side: () =>
                 import ( /* webpackChunkName: "Messages" */ "../components/MessageList.vue"),
         },
+        children: [{
+            name: 'MessageList',
+            path: '/app/messages/:matchID?',
+            components: {
+                child: () =>
+                    import ( /* webpackChunkName: "MessagesChild" */ "../components/MessageList.vue"),
+            },
+        }],
         props: true,
+    },
+    {
+        name: 'Settings',
+        path: '/app/settings',
+        components: {
+            default: () =>
+                import ( /* webpackChunkName: "MyProfile" */ "../components/Profile.vue"),
+        },
+        beforeEnter: (to, from) => {
+            if (window.innerWidth >= 750) {
+                return {
+                    name: "Profile",
+                    replace: true,
+                }
+            }
+        },
     },
     {
         name: 'Profile',
@@ -125,6 +149,14 @@ const routes = [{
                 import ( /* webpackChunkName: "MyProfile" */ "../components/MyProfile.vue"),
             side: (e) =>
                 import ( /* webpackChunkName: "SetGender" */ "../components/SetLocation.vue")
+        }
+    },
+    {
+        name: 'Privacy',
+        path: '/privacy',
+        components: {
+            default: () =>
+                import ( /* webpackChunkName: "MyProfile" */ "../components/Privacy.vue"),
         }
     },
     {

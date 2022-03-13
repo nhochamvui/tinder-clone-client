@@ -1,5 +1,9 @@
 <template>
-  <section>
+<div>
+  <div class="matches__header">
+    <slot name="header"></slot>
+  </div>
+  <section class="matches__section">
     <img 
     v-for="match of matchesGetSet"
     v-bind:key="match.id"
@@ -9,6 +13,7 @@
     v-bind:src="match.profileImages[0]" alt="profile_picture"
     >
   </section>
+</div>
 </template>
 
 <script>
@@ -21,6 +26,7 @@ export default {
   data(){
     return {
       BASE_PHOTO_URL: this.$store.state.hostURL + this.$store.state.hostPhotosURL,
+      windowWidth: window.innerWidth,
     }
   },
   computed: {
@@ -73,14 +79,13 @@ export default {
 </script>
 
 <style scoped>
+
 section {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 15px;
   padding-left: 15px;
   padding-right: 15px;
-  /* flex-flow: row;
-  justify-content: space-evenly; */
 }
 .match-card {
   width: 100%;
@@ -89,8 +94,27 @@ section {
   background-size: cover;
   border-radius: 5px;
 }
+
+@media screen and (max-width: 749px){
+  .match-card {
+    width: 90px;
+    margin-right: 15px;
+  }
+  .matches__section {
+    width: calc(100vw - 15px);
+    overflow-x: scroll;
+    box-sizing: border-box;
+    white-space: nowrap;
+    display: inline-block;
+  }
+}
 .link:hover{
   filter: none;
   color: none;
+}
+.matches__header{
+  margin-bottom: 10px;
+  margin-left: 10px;
+  font-weight: 600;
 }
 </style>

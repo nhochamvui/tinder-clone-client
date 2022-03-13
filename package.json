@@ -41,7 +41,8 @@
         },
         "rules": {
             "no-unused-vars": "off",
-            "no-debugger": "off"
+            "no-debugger": "off",
+            "no-unused-components": "off"
         },
         "globals": {
             "FB": "readonly"

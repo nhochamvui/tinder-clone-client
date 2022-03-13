@@ -6,19 +6,16 @@
           <Image class="avatar Of(cover)" v-bind:imgSrc="matchAvatar" v-bind:altString="'mini_avatar'"></Image>
           <div class="match__date" v-if="currentMatch" v-text="'You matched with ' + currentMatch.name + ' on ' + dateOfMatch"></div>
         </div>
-        <router-link class="close__button" :to="{ name: 'MakeFriends' }">
-          <img class="close__button--img" src="/close.svg" style="width: 30px; height: 30px; filter: invert(87%) sepia(4%) saturate(1151%) hue-rotate(195deg) brightness(111%) contrast(88%);" alt="">
-        </router-link>
+        <a class="close__button Cur(p)" @click="$router.go(-1)">
+          <img class="close__button--img" src="/close.svg" style="width: 30px; height: 30px;" alt="">
+        </a>
       </div>
       <div ref="conversation-history" class="conversation__history" v-on:wheel.passive="onWheel">
       </div>
       <div class="chat__tools">
         <form class="chat__form" action="">
           <textarea class="chat__box Rs(none)" v-model="input" name="" id="" cols="30" rows="10" placeholder="Type a message" maxlength="5000" style="height: 37px"></textarea>
-          <!-- <button class=""> -->
-          <!-- </button> -->
         </form>
-        <!-- <Image style="object-fit: cover" class="emoji__picker" v-bind:imgSrc="'/icon/grind.png'"/> -->
         <button 
           v-on:click="submitMesssage(input)" 
           class="button__submit"
@@ -26,10 +23,19 @@
           >SEND</button>
       </div>
     </div>
-    <h1 v-else class="Us(none) W(100%) Ta(center) Al(center)">Don't let your match waiting... Text them first!</h1>
-    <div v-if="matchId">
-    </div>  
+    <div class="H(100%) W(100%)" v-else>
+      <div class="H(100%) W(100%) D(flex) Fd(column) " v-if="windowWidth < 750">
+        <Matches>
+          <template v-slot:header>
+            <span>New matches</span>
+          </template>
+        </Matches>
+        <router-view name="child" />
+      </div>
+    </div>
+    <h4 v-if="!matchId && windowWidth >= 750" class="Us(none) W(100%) Ta(center) Al(center)">Tip: Don't let your match waiting... Text them first!</h4>
   </div>
+  
 </template>
 
 <script>
@@ -37,6 +43,8 @@ import { mapActions, mapGetters, useStore } from 'vuex';
 import { computed, onMounted, ref, watchEffect,  } from 'vue';
 import { defineComponent, createApp } from 'vue';
 import Image from "./Image.vue";
+import Matches from './Matches.vue';
+import { debug } from 'console';
 export default {
     name: "Messages",
     inheritAttrs: false,
@@ -45,6 +53,7 @@ export default {
     },
     components: {
       Image: Image,
+      Matches,
     },
     setup () {
       const inbox2 = ref([]);
@@ -85,12 +94,18 @@ export default {
         pageSize: 12,
         history: [],
         isFetchingMessages: false,
+        isSmallWidth: true,
       }
     },
     computed: {
       me: {
         get(){
           return this.getMe();
+        }
+      },
+      windowWidth: {
+        get(){
+          return this.getWindowWidth();
         }
       },
       matchAvatar: {
@@ -228,6 +243,7 @@ export default {
         getMe: "users/getMe",
         getConnection: "getConnection",
         getHostPhotosURL: "getHostPhotosURL",
+        getWindowWidth: "getWindowWidth",
       }),
       ...mapActions({
         fetchMessagesByID: 'fetchMessagesByID',
@@ -236,7 +252,6 @@ export default {
       submitMesssage(message){
         if(message.trim().length > 0){
           try {
-            debugger
             this.getConnection().invoke("SendMessage", this.matchId, message);
             this.input = '';
             console.log('sending message: ', message);
@@ -284,14 +299,13 @@ export default {
       },
       renderMessage(message, isPrepend){
         let history = this.$refs['conversation-history'];
-
         let bubbleContainer = document.createElement("div");
         let bubbleChat;
         let avatar = this.createBubbleAvatar(this.matchAvatar, ['avatar', 'bubble__avatar'])
         let bubbleTime = this.createBubbleTime(message.timeStamp, ['time__bubble', 'Color(secondary)']);
         if(message.fromID == this.matchId || message.toID == this.matchId){
           // message sent by me
-          if(message.fromID == this.me.id){
+          if(message.fromID == this.me.userID){
             bubbleContainer.className = "right chat__container Al(flex-end)";
             bubbleChat = this.createBubbleChat(message.content, ['right__bubble', 'chat__bubble']);
             bubbleContainer.appendChild(bubbleTime);
@@ -407,6 +421,7 @@ export default {
 </script>
 
 <style scoped>
+
 form{
   margin: 0 0 0 0;
 }
@@ -513,9 +528,11 @@ form{
 }
 .close__button--img{
   transition: transform .2s ease;
+  filter: invert(87%) sepia(4%) saturate(1151%) hue-rotate(195deg) brightness(111%) contrast(88%);
 }
 .close__button--img:hover{
   transform: rotate(-90deg);
+  filter: none;
 }
 
 textarea{

@@ -1,21 +1,32 @@
 <template>
     <div class="main">
-        <SideBar
-            v-if="isUserAuthenticated && me !== undefined"
-            v-bind:myInfo="me"
-            class="side-bar"
-        />
+        <div class="app-bar D(flex) Al(center)" v-if="windowWidth < 750 && isUserAuthenticated && me !== undefined">
+            <div class="P(abs)" style="top:15px;left:5px">
+                <router-link :to="{ name: 'Settings' }">
+                    <img src="/icon/settings.png" style="width:30px;height:30px" alt="">
+                </router-link>
+            </div>
+            <h1 class="W(100%) Ta(center) Color(brandColor) Us(none)">tinder clone</h1>
+        </div>
+        <div v-bind:class="{'side-bar': windowWidth < 750}">
+            <SideBar
+                v-if="isUserAuthenticated && me !== undefined"
+                v-bind:myInfo="me"
+                class="W(100%) H(100%)"
+            />
+        </div>
         <section
             class="W(100%)"
             :class="{ right: isUserAuthenticated }"
         >
-            <router-view
-                v-if="
+            <div class="W(100%) H(100%)" v-if="
                     !isLoading ||
                     routeName === 'Authenticate' ||
-                    routeName === 'SignupProfile'
-                "
-            />
+                    routeName === 'SignupProfile' ||
+                    routeName === 'Privacy'"
+            >
+                <router-view/>
+            </div>
             <h1 v-else>Loading...</h1>
         </section>
     </div>
@@ -24,6 +35,8 @@
 <script>
 import { useStore, mapGetters, mapActions } from "vuex";
 import SideBar from "./components/SideBar.vue";
+// import Image from "./components/Image.vue";
+// import Profile from './components/Profile.vue'
 import "../css/index.css";
 
 export default {
@@ -36,7 +49,15 @@ export default {
             loadingState: false,
         };
     },
+    data(){
+        return{
+            showSide: false,
+        }
+    },
     computed: {
+        windowWidth: function(){
+            return this.getWindowWidth();
+        },
         routeName: function () {
             return this.$route.name;
         },
@@ -113,7 +134,7 @@ export default {
                     }
                 }
                 else{
-                   this.$router.push({
+                    this.$router.push({
                         name: "Authenticate",
                         params: { action: "login" },
                     }); 
@@ -129,6 +150,8 @@ export default {
             getSettings: "getSettings",
             getToken: "users/getToken",
             isLoadingUser: "users/isLoadingUser",
+            getWindowWidth: "getWindowWidth",
+            getMe: "users/getMe",
         }),
         ...mapActions({
             loadUser: "users/loadUser",
@@ -139,6 +162,9 @@ export default {
             createConnection: "createConnection",
             unLoadUser: "users/unLoadUser",
         }),
+        getProfileImage(){
+            return this.me.profileImage.find(e => e !== '');
+        }
     },
     created: function () {},
     mounted: async function () {
@@ -158,11 +184,21 @@ export default {
     updated: async function () {},
     components: {
         SideBar,
+        // Image,
+        // Profile
     },
 };
 </script>
 
 <style scoped>
+.app-bar{
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 60px;
+    padding-left: 5px;
+}
+
 .main {
     display: flex;
     width: 100%;
@@ -188,8 +224,28 @@ section {
     height: 100%;
 }
 </style>
-
+<style scoped>
+@media screen and (max-width: 749px){
+    .main{
+        flex-direction: column;
+        justify-content: center;
+    }
+    .right{
+        width: 100%;
+        height: 85%;
+    }
+    .side-bar{
+        width: 100%;
+        height: 48px;
+        position: fixed;
+        bottom: 0;
+    }
+}
+</style>
 <style>
+*{
+    box-sizing: border-box;
+}
 :root {
     --blue40: #47a1ff;
     --blue50: #3d9fff;
@@ -219,8 +275,8 @@ body {
 }
 body {
     margin: 0;
-    font-family: ProximaNova, sans-serif;
-    overflow-y: -moz-hidden-unscrollable;
+    font-family: ProximaNova,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif,Helvetica,Arial,Apple Color Emoji,Segoe UI emoji;
+    overflow: hidden;
     font-size: 13px;
 }
 #app {
@@ -228,5 +284,6 @@ body {
     -moz-osx-font-smoothing: grayscale;
     color: #2c3e50;
     margin: 0;
+    overflow: hidden;
 }
 </style>

@@ -1,16 +1,10 @@
 <template>
-    <aside>
+    <aside v-if="windowWidth >= 750">
         <div class="sidebar-header">
             <router-link class="my-profile" :to="{ name: 'Profile' }">
-                <div
-                    class="back-arrow"
-                    @click="$router.go(-1)"
-                    v-if="
-                        routeName !== 'MakeFriends' && routeName !== 'Messages'
-                    "
-                >
+                <router-link class="back-arrow" :to="{name:'MakeFriends', replace:true}" v-if="routeName !== 'MakeFriends' && routeName !== 'Messages'">
                     <img v-bind:src="iconPreviousArrow" alt="back" />
-                </div>
+                </router-link>
                 <div class="avatar">
                     <div class="circle">
                         <Image
@@ -24,12 +18,9 @@
             </router-link>
         </div>
         <div class="sidebar-content">
-            <!-- <SetGender v-if="routeName == 'SetGender'" /> -->
-            <!-- <div class="profile" v-if="routeName == 'Profile' || routeName == 'ProfileEdit'"> -->
-            <!-- </div> -->
             <nav
                 class="mini-nav"
-                v-if="routeName == 'MakeFriends' || routeName === 'Messages'"
+                v-if="routeName === 'MakeFriends' || routeName === 'Messages' || routeName === 'MessageList'"
             >
                 <span
                     :class="{ 'nav-item-hightlight': navActiveIndex == 1 }"
@@ -62,11 +53,31 @@
             <!-- <MessageList v-if="navActiveIndex == 2"/> -->
         </div>
     </aside>
+    <nav v-else>
+        <ul class="side-bar__ul">
+            <li>
+                <router-link class="button" :to="{ name: 'MakeFriends' }">
+                    <img class="button--img" src="/icon/tinder-icon.svg" style="width: 30px; height: 30px;" alt="">
+                </router-link>
+            </li>
+            <li>
+                <router-link class="button" :to="'/app/messages/'">
+                    <img class="button--img" src="/icon/message.svg" style="width: 30px; height: 30px;" alt="">
+                </router-link>
+            </li>
+            <li>
+                <router-link class="button" :to="{ name: 'Profile' }">
+                    <img class="button--img" src="/icon/profile.svg" style="width: 30px; height: 30px;" alt="">
+                </router-link>
+            </li>
+        </ul>
+    </nav>
 </template>
 
 <script>
 // import Matches from './Matches.vue';
 // import MessageList from './MessageList.vue';
+import Profile from './Profile.vue';
 import SetGender from "./SetGender.vue";
 import Image from "./Image.vue";
 import { mapActions, mapGetters, useStore } from "vuex";
@@ -78,6 +89,7 @@ export default {
         // MessageList,
         SetGender,
         Image,
+        Profile,
     },
     props: {
         myInfo: Object,
@@ -95,6 +107,9 @@ export default {
             navActiveIndex: 1,
             isSetAgePref: false,
             bgImage: '',
+            windowWidth: this.getWindowWidth(),
+            sideComponent: 'Profile',
+            show: false,
         };
     },
     methods: {
@@ -103,10 +118,14 @@ export default {
             getHostPhotosURL: "getHostPhotosURL",
             isLoadedRequirements: "isLoadedRequirements",
             getMatches: "getMatches",
+            getWindowWidth: "getWindowWidth",
         }),
         ...mapActions({
             fetchMatches: "fetchMatches",
         }),
+        onWindowResize(){
+            this.windowWidth = window.innerWidth;
+        },
         onNavClick: function (value) {
             // need: router go...
             if (this.navActiveIndex == value) {
@@ -170,6 +189,7 @@ export default {
     watch: {
         routeName: {
             handler: function (name) {
+                console.log('routeName: ', name);
                 if (name === "Messages" || name === "MakeFriends") {
                     // this.fetchMatches();
                 }
@@ -190,6 +210,9 @@ export default {
     },
     mounted: function () {
         console.log("mounted sidebar");
+        this.$nextTick(() =>{
+            window.addEventListener("resize", this.onWindowResize)
+        })
         this.isSetAgePref = false;
     },
     activated: function () {
@@ -200,6 +223,17 @@ export default {
 </script>
 
 <style scoped>
+.router-link-active > img{
+    filter: invert(43%) sepia(97%) saturate(5877%) hue-rotate(322deg) brightness(101%) contrast(98%);
+}
+.router-link-exact-active, .aria-current > img{
+    filter: invert(43%) sepia(97%) saturate(5877%) hue-rotate(322deg) brightness(101%) contrast(98%);
+}
+
+.avatar{
+    border-radius: 50%;
+}
+
 .profile:first-child {
     width: 100%;
     height: 100%;
@@ -211,8 +245,8 @@ aside {
     max-width: 375px;
 }
 .circle {
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     border: white 2px solid;
     border-radius: 50%;
     clip-path: circle(50%);
@@ -296,6 +330,35 @@ h2 {
 @media only screen and (min-width: 1025px) {
     .sidebar-header {
         min-height: 70px;
+    }
+}
+</style>
+
+<style scoped>
+@media screen and (max-width: 749px){
+    .side-bar{
+        width: 100%;
+        height: 48px;
+        position: absolute;
+        top: 93%;
+    }
+    .side-bar__ul{
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+    }
+    .button{
+        width: 30px;
+        height: 30px;
+    }
+
+    .button-active{
+        filter: invert(43%) sepia(97%) saturate(5877%) hue-rotate(322deg) brightness(101%) contrast(98%);
     }
 }
 </style>

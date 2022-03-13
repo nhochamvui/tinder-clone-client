@@ -1,4 +1,14 @@
 <template>
+    <!-- smallwidth v-if="isSmallWidth"-->
+    <div v-if="windowWidth < 750">
+        <div class="messagelist__header">Messages</div>
+        <Image v-if="!messageList.length > 0"
+            style="height: 200px; width: 100%; object-fit: scale-down"
+            v-bind:imgSrc="'/icon/inbox_empty.png'"
+            v-bind:altString="'empty_inbox'"
+        />
+    </div>
+
     <div
         v-for="message of messageList"
         v-bind:key="(matchInfo = getMatchInfo(message.fromID, message.toID))"
@@ -9,7 +19,7 @@
             v-on:click="
                 (e) => {
                     openConversationHistory(
-                        message.fromID == me.id ? message.toID : message.fromID
+                        message.fromID == me.userID ? message.toID : message.fromID
                     );
                     onClickMessage(e);
                 }
@@ -58,9 +68,16 @@
             ></div>
         </a>
     </div>
+    <Image v-if="!messageList.length > 0 && windowWidth > 750"
+        style="height: 200px; width: 100%; object-fit: scale-down"
+        v-bind:imgSrc="'/icon/inbox_empty.png'"
+        v-bind:altString="'empty_inbox'"
+    />
+    
 </template>
 
 <script>
+import { Console } from 'console';
 import { mapActions, mapGetters } from "vuex";
 import Image from "./Image.vue";
 export default {
@@ -80,10 +97,15 @@ export default {
     computed: {
         messageList: {
             get() {
-                // console.log("get messagelist");
+                console.log("get messagelist");
                 let list = this.getLatestMessages();
                 return list;
             },
+        },
+        windowWidth: {
+            get(){
+            return this.getWindowWidth();
+            }
         },
         me: {
             get() {
@@ -108,6 +130,7 @@ export default {
             getMe: "users/getMe",
             getConnection: "getConnection",
             getHostPhotosURL: "getHostPhotosURL",
+            getWindowWidth: "getWindowWidth",
         }),
         ...mapActions({
             fetchLatestMessages: "fetchLatestMessages",
@@ -118,13 +141,13 @@ export default {
         },
         getMatchInfo(fromID, toID) {
             let matches = this.getMatches();
-            let matchID = fromID == this.me.id ? toID : fromID;
+            let matchID = fromID == this.me.userID ? toID : fromID;
             let img = "";
             let name = "";
             let id;
             matches.forEach((element) => {
                 if (element.id == matchID) {
-                    img = this.getHostPhotosURL() + element.profileImages[0];
+                    img = element.profileImages[0];
                     name = element.name;
                     id = element.id;
                     return;
@@ -272,5 +295,19 @@ h3 {
     margin-inline-end: 0px;
     font-weight: bold;
     color: var(--primaryColor);
+}
+.messagelist__header{
+    margin-left: 10px;
+    margin-top: 10px;
+    font-weight: 600;
+}
+
+@media screen and (max-width: 749px){
+    .message__info {
+        border-bottom: var(--gray30) 1px solid;
+    }
+    .messagelist__container{
+        background-color: white;
+    }
 }
 </style>

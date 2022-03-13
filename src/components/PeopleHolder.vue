@@ -424,6 +424,18 @@ h2, h3{
     position: absolute;
     box-shadow: 0px 0px 14px 1px rgb(0 0 0 / 20%);
 }
+@media screen and (max-width: 749px){
+    .people-card{
+        width: 100%;
+        height: 100%;
+        margin-left: 5px;
+        margin-right: 5px;
+        max-height: none;
+        position: relative;
+        border-radius: 10px;
+        box-shadow: 0px 0px 14px 1px rgb(0 0 0 / 20%);
+    }
+}
 .dragable{
     position: absolute;
     animation-duration: 1s;
@@ -521,6 +533,7 @@ button{
     filter: invert(33%) sepia(10%) saturate(795%) hue-rotate(175deg) brightness(93%) contrast(81%);
 }
 .button{
+    bottom: 10px;
     display: flex;
     align-items: center;
     justify-content: center;

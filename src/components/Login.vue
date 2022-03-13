@@ -45,9 +45,9 @@
             </button>
             <hr class="W(100%)">
             <h1 class="heading">COMING SOON IN 2023!</h1>
-            <div class="D(flex) W(100%) Fd(row) Jc(space-between) Al(center)">
+            <div class="logo__container D(flex) W(100%) Fd(row) Jc(space-between) Al(center)">
                 <Image v-bind:altString="'app store logo'" v-bind:imgSrc="'/img/appstore-logo.png'" style="height:48px;object-fit:contain"/>
-                <Image v-bind:altString="'app store logo'" v-bind:imgSrc="'/img/googleplay-logo.png'" style="height:70px;object-fit:contain"/>
+                <Image v-bind:altString="'app store logo'" v-bind:imgSrc="'/img/googleplay-logo.png'" style="height:65px;object-fit:contain"/>
             </div>
         </div>
         
@@ -100,7 +100,7 @@ export default {
             const authResponse = FB.getAuthResponse();
             if (!authResponse) {
                 FB.login(this.loginCallback, {
-                    scope: "email,user_birthday,user_gender,user_location,user_photos",
+                    scope: "email,user_birthday,user_gender",
                     return_scopes: true,
                 });
             } else {
@@ -285,5 +285,13 @@ label {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+</style>
+
+<style scoped>
+@media screen and (max-width: 470px) {
+    .logo__container{
+        flex-direction: column;
+    }
 }
 </style>

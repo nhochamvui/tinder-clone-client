@@ -156,7 +156,6 @@ export default {
       this.getNewSuggestedPeople();
     },
     onLikeClick(match) {
-      debugger
       this.currentMatchName = match.name;
       this.currentMatchProfileImage = match.profileImages.find(e => e !== '');
       this.currentMatchID = match.id;

@@ -1,5 +1,6 @@
 <template>
     <div class="profile-body" ref="body">
+        <!-- <router-view name="side"/> -->
         <PeopleHolder
             v-bind:person-data="me"
             v-bind:is-personal-data="isPersonalData"

@@ -1,4 +1,7 @@
 <template>
+  <!-- <div v-if="windowWidth < 750">
+    <p>hello</p>
+  </div> -->
   <div
     v-on:mouseup="e => mouseUpEvent(e)"
     v-on:mousemove="mouseMoveEvent"
@@ -139,7 +142,8 @@ export default {
   methods: {
     ...mapGetters({
       getDiscoverySettings: "getSettings",
-      getSettings: "getSettings"
+      getSettings: "getSettings",
+      getWindowWidth: "getWindowWidth",
     }),
     ...mapActions({
       fetchDiscoverySettings: "fetchSettings",
@@ -345,6 +349,9 @@ export default {
     },
   },
   computed: {
+    windowWidth: function () {
+      return this.getWindowWidth();
+    },
     routeValueChange: function () {
       return this.$route.name;
     },
@@ -358,6 +365,7 @@ export default {
     },
     discoverySettingsGetSet: {
       get() {
+        console.log('getDiscoverySettings ')
         return this.getDiscoverySettings();
       },
       set(newVal) {
@@ -517,6 +525,11 @@ export default {
     },
   },
   watch: {
+    windowWidth: function (newVal) {
+      if (newVal >= 750) {
+        this.$router.push({name: "Profile", replace: true})
+      }
+    },
     discoverySettingsGetSet: function (newVal) {
       if (newVal.length == 0) {
         this.fetchDiscoverySettings();
@@ -527,13 +540,16 @@ export default {
       this.initializePrefChecks();
     },
   },
+  created: function(){
+    console.log(this.$refs);
+  },
   mounted: function () {
     console.log("mounted at profile, ", this.getSettings() != null && this.getSettings() != undefined);
     this.initializePrefChecks();
     this.initializeAgePref('age-slider1', 'age-slider2', 'age-divider', 'age-tracker');
-    if (this.discoverySettingsGetSet.length == 0) {
-      this.fetchDiscoverySettings();
-    }
+    // if (this.discoverySettingsGetSet.length == 0) {
+    //   this.fetchDiscoverySettings();
+    // }
   },
 };
 </script>
@@ -562,8 +578,8 @@ export default {
 }
 .circle {
   background-color: white;
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   border: #fd546c solid 1px;
   transition-timing-function: ease-in-out;
