@@ -43,11 +43,8 @@
                 name="side"
                 v-if="loadedRequirements()"
             >
-                <component
-                    :is="Component"
-                    v-on:nav-index-change="onNavIndexChange"
-                    v-on:on-set-gender-pref-click="onSetGenderPrefClick"
-                />
+                <component :is="Component" v-on:nav-index-change="onNavIndexChange"
+                    v-on:on-set-gender-pref-click="onSetGenderPrefClick"/>
             </router-view>
             <!-- <Matches v-on:openChat="onOpenChat" style="margin-top: 10px" v-if="navActiveIndex == 1 && (routeName == 'MakeFriends' || routeName === 'Messages')"/> -->
             <!-- <MessageList v-if="navActiveIndex == 2"/> -->
@@ -77,8 +74,6 @@
 <script>
 // import Matches from './Matches.vue';
 // import MessageList from './MessageList.vue';
-import Profile from './Profile.vue';
-import SetGender from "./SetGender.vue";
 import Image from "./Image.vue";
 import { mapActions, mapGetters, useStore } from "vuex";
 import { onMounted } from '@vue/runtime-core';
@@ -87,9 +82,7 @@ export default {
     components: {
         // Matches,
         // MessageList,
-        SetGender,
         Image,
-        Profile,
     },
     props: {
         myInfo: Object,
@@ -137,19 +130,15 @@ export default {
                     break;
                 }
                 case 2: {
-                    this.$router.push({
-                        name: "Messages",
-                        // params: { matchID: 2 },
-                    });
+                    this.$router.push('/app/messages');
                     break;
                 }
             }
             this.navActiveIndex = value;
         },
         onSetGenderPrefClick: function () {
-            console.log("received");
-            this.$router.push({ name: "SetGender" });
-            this.isSetAgePref = true;
+            // this.$router.push({ name: "SetGender" });
+            // this.isSetAgePref = true;
         },
         onOpenChat: function (navIndex) {
             this.navActiveIndex = navIndex;
@@ -205,6 +194,7 @@ export default {
                     this.bgImage = newVal.profileImages.find(e => e !== '') || '/img/default_profile_picture.jpg';
                 }
             },
+            immediate: true,
             deep: true,
         }
     },
@@ -223,13 +213,15 @@ export default {
 </script>
 
 <style scoped>
-.router-link-active > img{
+.router-link-active > .button--img{
     filter: invert(43%) sepia(97%) saturate(5877%) hue-rotate(322deg) brightness(101%) contrast(98%);
 }
-.router-link-exact-active, .aria-current > img{
+.router-link-exact-active, .aria-current > .button--img{
     filter: invert(43%) sepia(97%) saturate(5877%) hue-rotate(322deg) brightness(101%) contrast(98%);
 }
-
+.my-profile{
+    filter: none;
+}
 .avatar{
     border-radius: 50%;
 }

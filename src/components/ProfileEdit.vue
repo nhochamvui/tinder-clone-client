@@ -56,7 +56,7 @@
                         class="add-icon"
                         v-bind:src="iconAdd"
                     />
-                    <input v-if="profileImages[index - 1] === '' || !profileImages[index - 1]" type="file" />
+                    <input v-if="(index-1) == 0 || profileImages[index - 1] === '' || !profileImages[index - 1]" type="file" />
                 </label>
             </li>
         </ul>
@@ -141,7 +141,7 @@ export default {
             BASE_PHOTO_URL:
                 this.$store.state.hostURL + this.$store.state.hostPhotosURL,
             bioString: this.getMe().about,
-            livingIn: this.getMe().location,
+            livingIn: this.getMe().hometown,
             title: "gender",
             options: [
                 { key: 0, value: "Male" },
@@ -210,6 +210,10 @@ export default {
             return undefined;
         },
         onFileSelected(fileSelected, index) {
+            if(!fileSelected){
+                return;
+            }
+
             this.uploadAvatar({
                 photo: fileSelected,
                 index: index,
@@ -219,6 +223,10 @@ export default {
             this.setGender(key);
         },
         removeImage(index){
+            if(index == 0){
+                return;
+            }
+
             if(!this.profileImages[index] || this.profileImages[index] === ''){
                 return;
             }
@@ -231,7 +239,7 @@ export default {
         saveInfo(){
             let info = {
                 about: this.bioString,
-                location: this.livingIn,
+                hometown: this.livingIn,
                 dateOfBirth: this.getMe().dateOfBirth,
             }
             this.updateInfo(info).then(isSuccess => {

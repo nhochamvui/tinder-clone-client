@@ -92,8 +92,24 @@ const routes = [{
         path: '/app/settings',
         components: {
             default: () =>
-                import ( /* webpackChunkName: "MyProfile" */ "../components/Profile.vue"),
+                import ( /* webpackChunkName: "SettingMom" */ "../components/Profile.vue"),
         },
+        children: [{
+            name: 'SetGender',
+            path: '/app/settings/gender',
+            components: {
+                default: () =>
+                    import ( /* webpackChunkName: "SettingMom2" */ "../components/SetGender.vue"),
+            },
+            beforeEnter: (to, from) => {
+                if (window.innerWidth >= 750) {
+                    return {
+                        name: "Profile",
+                        replace: true,
+                    }
+                }
+            },
+        }, ],
         beforeEnter: (to, from) => {
             if (window.innerWidth >= 750) {
                 return {
@@ -132,7 +148,7 @@ const routes = [{
         ]
     },
     {
-        name: 'SetGender',
+        name: 'SetGenderSide',
         path: '/app/settings/gender',
         components: {
             default: () =>

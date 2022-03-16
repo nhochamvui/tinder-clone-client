@@ -5,15 +5,15 @@
         :class="{ 'people-card': !isPersonalInfo, 
         'people-card people-card-detail': isPersonalInfo}" 
     >
-        <a v-if="showMore" style="z-index:1;right:50px" class="P(abs) B(0)" @click="showMore = false">
+        <a v-if="showMore" style="z-index:1;right:50px" class="P(abs) B(0) Cur(p)" @click="showMore = false">
             <img style="width:30px" src="/icon/collapse.svg" alt="">            
         </a>
         <router-view v-if="isLoadedRequirements()"></router-view>
-        <div class="info-container" v-if="['MakeFriends', 'Profile', 'SetGender'].includes(routeName)">
+        <div ref="card" class="info-container" v-if="['MakeFriends', 'Profile', 'SetGender'].includes(routeName)">
             <div class="D(flex) W(100) Pb(50px) H(100) Of(scroll) Fd(column)" 
                 >
                 <div  class="W(100)">
-                    <div ref="card"
+                    <div 
                         :class="{'dragable': routeName == 'MakeFriends' && !showMore, 'detail': showMore, 'background': !isPersonalInfo, 'background-detail': isPersonalInfo}"
                         v-bind:style="backgroundImage"
                     >
@@ -32,15 +32,15 @@
                                 v-if="nextArrowHover" alt="next">
                         </div>
                         <div v-if="routeName == 'MakeFriends' && !showMore" class="info Pl(5%)">
-                            <a class="P(abs)" style="top:10px;right:50px" v-if="routeName === 'MakeFriends'" @click="showMore = !showMore">
+                            <a class="P(abs) Cur(p)" style="top:10px;right:50px" v-if="routeName === 'MakeFriends'" @click="showMore = !showMore">
                                 <img style="width:30px;transform: rotate(180deg);" src="/icon/expand.svg" alt="">            
                             </a>
                             <span class="row">
                                 <h2 class="Color(white)" v-if="person.name">{{ person.name }}</h2><h3 class="Color(white)" v-if="person.age">{{ '  '+ person.age }}</h3>
                             </span>
-                            <span v-if="person.location" class="D(flex) Align(baseline) row mt(12px)">
+                            <span v-if="person.hometown" class="D(flex) Align(baseline) row mt(12px)">
                                 <img class="Sq(14px) Filter(white)" v-bind:src="iconLocation">
-                                <span class="info-text Color(white)" v-text="'Lives in ' + person.location"></span>
+                                <span class="info-text Color(white)" v-text="'Lives in ' + person.hometown"></span>
                             </span>
                             <span class="D(flex) Align(baseline) row">
                                 <img class="Sq(14px) Filter(white)" v-bind:src="iconSex">
@@ -56,9 +56,9 @@
                             <span class="row">
                                 <h2 v-if="person.name">{{ person.name }}</h2><h3 v-if="person.age">{{ '  '+ person.age }}</h3>
                             </span>
-                            <span v-if="person.location" class="D(flex) Align(baseline) row mt(12px)">
+                            <span v-if="person.hometown" class="D(flex) Align(baseline) row mt(12px)">
                                 <img class="Sq(14px) icon" v-bind:src="iconLocation">
-                                <span class="info-text" v-text="'Lives in ' + person.location"></span>
+                                <span class="info-text" v-text="'Lives in ' + person.hometown"></span>
                             </span>
                             <span class="D(flex) Align(baseline) row">
                                 <img class="Sq(14px) icon" v-bind:src="iconSex">
@@ -70,18 +70,19 @@
                             <span class="D(flex) Align(baseline) row info-text" v-if="person.about">{{ person.about }}</span>
                         </div>
                     </div>
+                    <div class="foreground"></div>
                     <div v-if="routeName == 'MakeFriends' && !showMore" class="tools-container">
-                        <button style="border-color:#106bd5" class="normal-button Us(none)">
+                        <button style="border-color:#106bd5" class="normal-button Us(none) Cur(p)">
                             <img style="max-width:24px" src="/icon/repeat.svg" alt="">
                         </button>
-                        <button style="border-color:#fd546c" class="special-button Us(none)" v-on:click="onDislikeClick()">
+                        <button style="border-color:#fd546c" class="special-button Us(none) Cur(p)" v-on:click="onDislikeClick()">
                             <img style="max-width:24px" src="/icon/dislike.svg" alt="">
                         </button>
                         <!-- <button class="normal-button Us(none)">Super Like</button> -->
-                        <button style="border-color:#2df187" class="special-button Us(none)" v-on:click="onLikeClick()">
+                        <button style="border-color:#2df187" class="special-button Us(none) Cur(p)" v-on:click="onLikeClick()">
                             <img style="max-width:24px" src="/icon/like.svg" alt="">
                         </button>
-                        <button style="border-color:#7b05ba" class="normal-button Us(none)">
+                        <button style="border-color:#7b05ba" class="normal-button Us(none) Cur(p)">
                             <img style="max-width:24px" src="/icon/skip.svg" alt="">
                         </button>
                     </div>
@@ -139,6 +140,7 @@ export default {
     methods: {
         ...mapActions({
             doLikePerson: 'users/likePerson',
+            dislikePerson: 'users/dislikePerson',
             setNewMatch: 'setNewMatch',
         }),
         ...mapGetters({
@@ -160,6 +162,7 @@ export default {
             }
 
             dragElement.onmousedown = onMouseDownEvent;
+            dragElement.ontouchstart = onMouseDownEvent;
             let originOffsetLeft = dragElement.offsetLeft, originOffsetTop = dragElement.offsetTop;
             let prevX = 0, prevY = 0;
             let startX = 0, startY = 0;
@@ -171,7 +174,9 @@ export default {
                 startY = e.clientY;
 
                 document.onmouseup = onMouseUpEvent;
+                document.ontouchend = onMouseUpEvent;
                 document.onmousemove = onMouseMoveEvent;
+                document.ontouchmove = (e) => onMouseMoveEvent({clientX: e.touches[0].clientX, clientY: e.touches[0].clientY});
 
                 if(startY >= originOffsetTop && startY <= (originOffsetTop + Math.round(dragElement.offsetHeight/2))){
                     directionY = 1;
@@ -197,7 +202,7 @@ export default {
                 deg = Math.min((Math.abs(currOffsetLeft - originOffsetLeft)*maxDeg) / limitPoint, maxDeg);
                 directionX = currOffsetLeft - originOffsetLeft < 0 ? -1 : 1;
                 dragElement.style.transform = 'rotate(' + deg*directionX*directionY + 'deg)';
-                dragElement.style.zIndex = -1;
+                dragElement.style.zIndex = 1;
             }
 
             function onMouseUpEvent(e){
@@ -210,11 +215,20 @@ export default {
                     dragElement.style.transform = ''; 
                 }
                 else{
-                    directionX < 0 ? thisRef.onDislikeClick() : thisRef.onLikeClick().then((isNotEnoughLikeCount)=>{
-                        console.log('isNotEnoughLikeCount: ', isNotEnoughLikeCount);
-                    });
                     dragElement.style.animationName = directionX < 0 ? 'swipe-left' : 'swipe-right';
-                    console.log('setting animation: ', dragElement.style.animationName)
+                    dragElement.style.animationDuration = '0.4s';
+                    dragElement.style.animationTimingFunction = 'ease';
+                    dragElement.style.animationFillMode = 'alternate';
+                    
+                    setTimeout(() => {
+                        if(directionX < 0){
+                            thisRef.onDislikeClick();
+                        }
+                        else{
+                            thisRef.onLikeClick();
+                        }
+                    }, 440);
+                    
                 }
                 document.onmouseup = null;
                 document.onmousemove = null;
@@ -259,6 +273,7 @@ export default {
             // }
         }, 
         onDislikeClick(){
+            this.dislikePerson(this.person.userID)
             this.$emit('onDislikeClick', this.person.id);
         },
         showArrowButton(){
@@ -456,10 +471,10 @@ h2, h3{
     .people-card{
         width: 100%;
         height: 100%;
-        margin-left: 5px;
-        margin-right: 5px;
+        margin-left: 10px;
+        margin-right: 10px;
         max-height: none;
-        position: relative;
+        position: absolute;
         border-radius: 10px;
         box-shadow: 0px 0px 14px 1px rgb(0 0 0 / 20%);
     }
@@ -479,6 +494,13 @@ h2, h3{
 img{
     width: 100%;
 }
+.foreground{
+    height: 68px;
+    width: 100%;
+    position: absolute;
+    bottom: 84px;
+    background-image: linear-gradient(to top, black,#fff0);
+}
 .tools-container{
     min-height: 84px;
     height: 68px;
@@ -491,7 +513,8 @@ img{
     align-items: center;
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;
-    margin-bottom: 10px;
+    padding-bottom: 5px;
+    background: black;
 }
 .info{
     position: absolute;

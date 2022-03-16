@@ -1,11 +1,11 @@
 <template>
-  <!-- <div v-if="windowWidth < 750">
-    <p>hello</p>
-  </div> -->
+  <router-view v-if="this.discoverySettingsGetSet != null && this.discoverySettingsGetSet.length != 0"/>
+
   <div
     v-on:mouseup="e => mouseUpEvent(e)"
     v-on:mousemove="mouseMoveEvent"
     v-if="this.discoverySettingsGetSet != null && this.discoverySettingsGetSet.length != 0"
+    v-show="['Settings', 'Profile'].includes(routeName)"
     class="settings__container"
   >
     <div class="settings__box bg(white)">
@@ -61,8 +61,8 @@
           v-on:mouseout="mouseOutEvent"
           v-on:click="onSetGenderClick()"
         >
-        {{this.genderPref}}
-        <img class="link fill-brandBG" style="width:10px; height:10px; margin-left:10px" src="../../public/icon/next.svg"/>
+          {{this.genderPref}}
+          <img class="link fill-brandBG" style="width:10px; height:10px; margin-left:10px" src="../../public/icon/next.svg"/>
         </div>
       </div>
     </div>
@@ -114,6 +114,7 @@
 import { mapActions, mapGetters } from "vuex";
 export default {
   name: "Settings",
+  inheritAttrs: false,
   setup(){
   },
   data() {
@@ -158,7 +159,12 @@ export default {
       this.unLoadUser();
     },
     onSetGenderClick: function(){
-      console.log('click set gender')
+      if(this.windowWidth < 750){
+        this.$router.push({name: "SetGender"});
+      }
+      else{
+        this.$router.push({name: "SetGenderSide"});
+      }
       this.$emit('onSetGenderPrefClick')
     },
     onSliderChange: function(e){
@@ -353,6 +359,9 @@ export default {
       return this.getWindowWidth();
     },
     routeValueChange: function () {
+      return this.$route.name;
+    },
+    routeName: function () {
       return this.$route.name;
     },
     meGetSet: {
@@ -701,6 +710,13 @@ export default {
   width: 100%;
   height: 100%;
 }
+
+@media screen and (max-width: 749px){
+  .settings__container{
+    overflow-y: auto;
+  }
+}
+
 .profile__title{
   font-size: 0.75rem;
   font-weight: 600;

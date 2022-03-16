@@ -18,6 +18,7 @@
         <section
             class="W(100%)"
             :class="{ right: isUserAuthenticated }"
+            v-bind:style="{height: windowWidth < 750 ? windowHeight-108 + 'px' : ''}"
         >
             <div class="W(100%) H(100%)" v-if="
                     !isLoading ||
@@ -58,6 +59,9 @@ export default {
         windowWidth: function(){
             return this.getWindowWidth();
         },
+        windowHeight: function(){
+            return this.getWindowHeight();
+        },
         routeName: function () {
             return this.$route.name;
         },
@@ -88,7 +92,7 @@ export default {
             handler: async function (newVal) {
                 console.log("at App, me changed:", newVal);
                 if(newVal){
-                    await this.setUserProfileImages();
+                    // await this.setUserProfileImages();
                     this.fetchSettings();
                     this.createConnection();
                     this.connect();
@@ -151,6 +155,7 @@ export default {
             getToken: "users/getToken",
             isLoadingUser: "users/isLoadingUser",
             getWindowWidth: "getWindowWidth",
+            getWindowHeight: "getWindowHeight",
             getMe: "users/getMe",
         }),
         ...mapActions({

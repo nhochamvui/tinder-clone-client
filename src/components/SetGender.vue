@@ -24,7 +24,7 @@ export default {
     },
     data() {
         return {
-            genders: ["men", "women", "everyone"],
+            genders: ["men", "women", "other", "everyone"],
             firstPhrase: "You will ",
             lastPhrase: " in discovery.",
         };
@@ -65,11 +65,13 @@ export default {
             getDiscoverySettings: "getSettings",
         }),
         setGenderClick: function(gender){
+            debugger
             this.gender = gender;
             console.log('gender: ', this.gender);
         }
     },
     mounted: function () {
+        console.log('mounted setgender')
     },
 };
 </script>

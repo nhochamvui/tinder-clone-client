@@ -23,8 +23,8 @@
           >SEND</button>
       </div>
     </div>
-    <div class="H(100%) W(100%)" v-else>
-      <div class="H(100%) W(100%) D(flex) Fd(column) " v-if="windowWidth < 750">
+    <div class="H(100%) W(100%) tf" v-else-if="windowWidth < 750">
+      <div class="H(100%) W(100%) D(flex) Fd(column) ">
         <Matches>
           <template v-slot:header>
             <span>New matches</span>

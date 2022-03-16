@@ -1,4 +1,11 @@
 <template>
+    <Modal v-on:close="onModalClose" v-if="showModal">
+      <template v-slot:body>
+        <h1>Signing Up</h1>
+        <div v-if="errorText === ''" class="spinner P(abs) Top(50%)"></div>
+        <div v-else class="P(abs) Top(50%)">{{errorText}}</div>
+      </template>
+    </Modal>
     <router-view
         v-if="routeName !== 'Authenticate'"
         name="replace"
@@ -34,14 +41,15 @@
                 </span>
                 <span class="button__label">LOGIN WITH GOOGLE</span>
             </button>
-            <button
+            <button v-bind:class="{'Jc(center)': isLogging}"
                 class="button D(flex) Fd(row) Al(center) Cur(p)"
                 @click="loginFB"
             >
-                <span class="button__icon">
+                <span v-if="!isLogging" class="button__icon">
                     <img src="/icon/facebook-logo.svg" alt="facebook logo">
                 </span>
-                <span class="button__label">LOGIN WITH FACEBOOK</span>
+                <span v-if="!isLogging" class="button__label">LOGIN WITH FACEBOOK</span>
+                <div v-if="isLogging" class="spinner"></div>
             </button>
             <hr class="W(100%)">
             <h1 class="heading">COMING SOON IN 2023!</h1>
@@ -58,10 +66,12 @@ import { ref } from "vue";
 import axios from "axios";
 import Image from "./Image.vue"
 import { mapActions, mapGetters } from "vuex";
+import Modal from './Modal.vue';
 export default {
     name: "Login",
     components: {
-        Image
+        Image,
+        Modal,
     },
     setup() {
         const loginInfo = ref({
@@ -77,6 +87,9 @@ export default {
     data(){
         return{
             test: 'hello',
+            isLogging: false,
+            showModal: false,
+            errorText: '',
         }
     },
     computed: {
@@ -97,6 +110,11 @@ export default {
         }),
         ...mapGetters("users", ["isAuthenticated", "getMe"]),
         async loginFB() {
+            if(this.isLogging){
+                return;
+            }
+
+            this.isLogging = true;
             const authResponse = FB.getAuthResponse();
             if (!authResponse) {
                 FB.login(this.loginCallback, {
@@ -104,7 +122,7 @@ export default {
                     return_scopes: true,
                 });
             } else {
-                FB.api("/me/permissions", "delete", null, () => FB.logout());
+                FB.api("/me/permissions", "delete", null, () =>{ FB.logout(); console.log(this.isLogging = false)} );
             }
         },
         afterLoginCallback: function (me, authResponse) {
@@ -131,7 +149,6 @@ export default {
                     accessToken: authResponse.accessToken,
                 });
                 if (res !== null) {
-                    console.log('o day ne',res)
                     if (res.accessToken) {
                         this.setToken(res.accessToken);
                         this.$router.push({ name: "MakeFriends" });
@@ -148,17 +165,26 @@ export default {
                     }
                 }
             }
+            else{
+                this.isLogging = false;
+            }
             console.log("login call back:", response);
         },
         onSignupFormSubmit(data){
+            this.showModal = true;
             data['accessToken'] = this.fbAccessToken;
             this.handleSignup(data);
         },
         async handleSignup(data){
             const res = await this.doSignup(data);
-            if(res != null && res.accessToken){
-                this.setToken(res.accessToken.result);
-                this.$router.push({ name: "MakeFriends" });
+            if(res != null){
+                if(res.isSuccess){
+                    this.setToken(res.accessToken);
+                    this.$router.push({ name: "MakeFriends" });
+                }
+                else{
+                    this.errorText = res.message;
+                }
             }
         },
         async onSubmit(event) {
@@ -198,6 +224,10 @@ export default {
                 this.$router.push({ name: "Home" });
             }
         },
+        onModalClose: function(){
+            this.showModal = false;
+            this.errorText = '';
+        }
     },
     created: function () {
         FB.getLoginStatus((response) => {
@@ -223,6 +253,24 @@ export default {
 </script>
 
 <style scoped>
+.spinner{
+    width: 45px;
+    height: 45px;
+    border: black 5px solid;
+    border-color: black black transparent transparent;
+    border-radius: 50%;
+    animation: spin 0.85s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
 
 .heading{
     margin-top: 30px;

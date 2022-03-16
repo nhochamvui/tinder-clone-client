@@ -1,4 +1,5 @@
 <template>
+<div class="signup-container W(100%) H(100%)">
     <h1 class="heading">CREATE ACCOUNT</h1>
     <form class="container" v-on:submit="submit" method="post" v-bind:action="host">
         <TextField
@@ -59,8 +60,11 @@
                 alt="profile_photo">
             </div>
         </div>
-        <input class="button Cur(p) Al-s(center)" type="submit" >
+        <button class="button Cur(p) Al-s(center)">
+            <input class="" type="submit" >
+        </button>
     </form>
+</div>
 </template>
 
 <script>
@@ -76,7 +80,6 @@ export default {
         DatePicker,
     },
     data(){
-        console.log('props', this.signupData);
         return{
             name: this.signupData.name ?? '',
             email: this.signupData.email ?? '',
@@ -93,6 +96,7 @@ export default {
                 profilePhoto: null,
             },
             host: this.getHostURL(),
+            isSubmitting: false,
         }
     },
     methods:{
@@ -100,22 +104,12 @@ export default {
             getHostURL: "getHostURL"
         }),
         ...mapActions({
-            uploadPhoto: "users/uploadPhoto",
             signup: "users/signup",
         }),
         submit(e){
             e.preventDefault();
             this.clearAllErrors();
-            console.log(
-                new Date(
-                    parseInt(this.birthDay.year).toString(), 
-                    (parseInt(this.birthDay.month)-1).toString(), 
-                    parseInt(this.birthDay.day).toString(), 12, 0));
             if(!this.isRequiredFieldsEmpty()){
-                this.uploadPhoto({
-                    photo: this.profilePhoto,
-                    index: 0,
-                });
                 this.$emit('submit', {
                     Name: this.name,
                     Birthday: this.birthDay.month.toString() + "/" +
@@ -256,6 +250,12 @@ export default {
         border: black 1px solid;
         color: black;
     }
+
+    .button > input{
+        border: none;
+        background: transparent;
+    }
+
     .container{
         display: flex;
         flex-direction: column;
@@ -331,4 +331,9 @@ export default {
         height: 80%;
         max-width: 100px;
     }
+@media screen and (max-width: 749px){
+    .signup-container{
+        overflow-y: auto;
+    }
+}
 </style>

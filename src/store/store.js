@@ -6,6 +6,8 @@ import { userInfo } from 'os';
 const signalR = require('@microsoft/signalr');
 window.addEventListener('resize', () => {
     store.dispatch('setWindowWidth');
+    store.dispatch('setWindowHeight');
+    console.log('resize')
 });
 
 const store = createStore({
@@ -59,6 +61,7 @@ const store = createStore({
         connection: null,
         document: null,
         windowWidth: window.innerWidth,
+        windowHeight: window.innerHeight,
     },
     mutations: {
         SET_DOCUMENT(state, element) {
@@ -161,10 +164,16 @@ const store = createStore({
         getWindowWidth(state) {
             return state.windowWidth;
         },
+        getWindowHeight(state) {
+            return state.windowHeight;
+        },
     },
     actions: {
         setWindowWidth(context) {
             this.state.windowWidth = window.innerWidth;
+        },
+        setWindowHeight(context) {
+            this.state.windowHeight = window.innerHeight;
         },
         setDocument(context, element) {
             context.commit('SET_DOCUMENT', element);
@@ -274,7 +283,7 @@ const store = createStore({
             }
         },
         setGender(context, gender) {
-            if (typeof gender == 'number' && gender >= 0 && gender <= 2) {
+            if (typeof gender == 'number' && gender >= 0 && gender <= 3) {
                 context.commit('SET_GENDER', gender);
             }
         },
@@ -334,6 +343,10 @@ const store = createStore({
                         return response.data;
                 }
             } catch (ex) {
+                if (ex.response) {
+                    return ex.response.data;
+                }
+                console.log('err res: ', ex.response.data);
                 console.log('authorize with Facebook failed: ', ex);
                 return null;
             }

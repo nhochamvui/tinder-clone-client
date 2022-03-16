@@ -74,7 +74,7 @@ const moduleUser = {
                 if (tokenContent.exp >= (Date.now() / 1000)) {
                     try {
                         console.log(process.env.VUE_APP_HOST_URL)
-                        let response = await axios.get(process.env.VUE_APP_HOST_URL + '/api/users/profile', {
+                        let response = await axios.get(process.env.VUE_APP_HOST_URL + '/api/profile/', {
                             headers: {
                                 'Authorization': 'Bearer ' + token,
                             },
@@ -117,7 +117,7 @@ const moduleUser = {
         },
         async setProfileImages(context) {
             try {
-                let response = await axios.get(process.env.VUE_APP_HOST_URL + '/api/users/profileImages/', {
+                let response = await axios.get(process.env.VUE_APP_HOST_URL + '/api/profile/profileImages/', {
                     headers: {
                         'Authorization': 'Bearer ' + context.getters.getUserToken,
                     },
@@ -157,6 +157,21 @@ const moduleUser = {
         async likePerson(context, personID) {
             try {
                 let response = await axios.post(process.env.VUE_APP_HOST_URL + '/api/matches/likes/', {
+                    "Id": personID,
+                }, {
+                    headers: {
+                        'Authorization': 'Bearer ' + context.getters.getUserToken,
+                    },
+                });
+                return response.data;
+            } catch (err) {
+                console.log('error while fetching profile images: ', err);
+                return false;
+            }
+        },
+        async dislikePerson(context, personID) {
+            try {
+                let response = await axios.post(process.env.VUE_APP_HOST_URL + '/api/matches/dislike/', {
                     "Id": personID,
                 }, {
                     headers: {

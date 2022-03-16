@@ -13,7 +13,6 @@
             
             <div class="modal-footer">
                 <slot name="footer"> </slot>
-                
                 <button type="button" class="btn-close" @click="close">
                     Close
                 </button>
@@ -45,6 +44,7 @@ export default {
     transition: all .5s linear;
   }
 .modal-backdrop {
+    z-index: 1;
     position: fixed;
     top: 0;
     bottom: 0;
