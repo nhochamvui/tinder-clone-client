@@ -131,8 +131,7 @@ export default {
                 me &&
                 me.email &&
                 me.gender &&
-                me.birthday.length == 10 &&
-                me.picture
+                me.birthday.length == 10
             ) {
                 me['accessToken'] = authResponse.accessToken;
                 this.handleSignup(me);

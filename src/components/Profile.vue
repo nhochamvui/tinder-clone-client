@@ -426,8 +426,10 @@ export default {
               return "Male";
             case 1:
               return "Female";
-            default:
+            case 2:
               return "Other";
+            default:
+                return "Everyone"
           }
         }
 

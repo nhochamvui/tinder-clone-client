@@ -5,11 +5,12 @@
         :class="{ 'people-card': !isPersonalInfo, 
         'people-card people-card-detail': isPersonalInfo}" 
     >
-        <a v-if="showMore" style="z-index:1;right:50px" class="P(abs) B(0) Cur(p)" @click="showMore = false">
-            <img style="width:30px" src="/icon/collapse.svg" alt="">            
-        </a>
+        
         <router-view v-if="isLoadedRequirements()"></router-view>
         <div ref="card" class="info-container" v-if="['MakeFriends', 'Profile', 'SetGender'].includes(routeName)">
+            <a v-if="showMore" style="z-index:1;right:50px" class="P(abs) B(0) Cur(p)" @click="showMore = false">
+                <img style="width:30px" src="/icon/collapse.svg" alt="">            
+            </a>
             <div class="D(flex) W(100) Pb(50px) H(100) Of(scroll) Fd(column)" 
                 >
                 <div  class="W(100)">
@@ -70,8 +71,10 @@
                             <span class="D(flex) Align(baseline) row info-text" v-if="person.about">{{ person.about }}</span>
                         </div>
                     </div>
-                    <div class="foreground"></div>
-                    <div v-if="routeName == 'MakeFriends' && !showMore" class="tools-container">
+                    <div v-if="!showMore" class="foreground"></div>
+                    <div v-if="routeName == 'MakeFriends' && !showMore"
+                        v-bind:class="{'black-background': !showMore}"
+                     class="tools-container">
                         <button style="border-color:#106bd5" class="normal-button Us(none) Cur(p)">
                             <img style="max-width:24px" src="/icon/repeat.svg" alt="">
                         </button>
@@ -207,6 +210,7 @@ export default {
 
             function onMouseUpEvent(e){
                 let currOffsetLeft = dragElement.offsetLeft, currOffsetTop = dragElement.offsetTop;
+                
                 dragElement.style.zIndex = '';
                 if(Math.abs(currOffsetLeft - originOffsetLeft) <= limitPoint 
                     && Math.abs(currOffsetTop - originOffsetTop) <= limitPoint){
@@ -218,18 +222,16 @@ export default {
                     dragElement.style.animationName = directionX < 0 ? 'swipe-left' : 'swipe-right';
                     dragElement.style.animationDuration = '0.4s';
                     dragElement.style.animationTimingFunction = 'ease';
-                    dragElement.style.animationFillMode = 'alternate';
+                    dragElement.style.animationFillMode = 'forwards';
                     
-                    setTimeout(() => {
-                        if(directionX < 0){
-                            thisRef.onDislikeClick();
-                        }
-                        else{
-                            thisRef.onLikeClick();
-                        }
-                    }, 440);
-                    
+                    if(directionX < 0){
+                        thisRef.onDislikeClick();
+                    }
+                    else{
+                        thisRef.onLikeClick();
+                    }
                 }
+                console.log('mouseup',dragElement.style)
                 document.onmouseup = null;
                 document.onmousemove = null;
             }
@@ -262,19 +264,22 @@ export default {
                 this.currentMatchName = result.match.name;
                 this.currentMatchID = this.person.userID;
             }
-            this.$emit('onLikeClick', result.match);
 
-            // if(result == 113){
-            //     return this.isNotEnoughLikeCount = true;
-            // }
-            // else if(result != false){
-            //     this.$emit('onLikeClick', this.person.id);
-            //     return this.isNotEnoughLikeCount = false;
-            // }
+            let dragElement = this.$refs['card'];
+            dragElement.style.animation = "swipe-right 0.4s ease forwards";
+
+            setTimeout(() => {
+                this.$emit('onLikeClick', result.match);
+            }, 440);
         }, 
         onDislikeClick(){
-            this.dislikePerson(this.person.userID)
-            this.$emit('onDislikeClick', this.person.id);
+            // this.dislikePerson(this.person.userID)
+            let dragElement = this.$refs['card'];
+            console.log('onDislikeClick',dragElement.style)
+            dragElement.style.animation = "swipe-left 0.4s ease forwards";
+            setTimeout(() =>{
+                this.$emit('onDislikeClick', this.person.id);
+            }, 440);
         },
         showArrowButton(){
             if(this.isShowNextButton){
@@ -401,7 +406,6 @@ export default {
     0%{
         left: 0;
         top: 0;
-        transform: none;
     }
     100% {
         left: 120vw;
@@ -409,6 +413,7 @@ export default {
 }
 
 @keyframes swipe-left {
+    
     100% {
         left: -120vw;
     }
@@ -514,7 +519,6 @@ img{
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;
     padding-bottom: 5px;
-    background: black;
 }
 .info{
     position: absolute;
@@ -534,6 +538,7 @@ img{
     overflow: hidden;
     box-sizing: border-box;
     border-radius: 10px;
+    background: white;
 }
 .myInfo{
     padding-left: 5%;
@@ -560,6 +565,9 @@ img{
     border-width: 0;
     background-color: var(--color--divider-primary);
 }
+.black-background{
+    background: black;
+}
 .Pos\(r0\){
     right: 0;
 }
@@ -571,6 +579,11 @@ img{
     border-radius: 50%;
     aspect-ratio: 1/1;
 }
+.special-button:hover > img{
+    transform: scale(1.3);
+    transition: all 0.5s ease-out;
+}
+
 .normal-button{
     min-width: 60px;
     border-radius: 50%;
