@@ -316,6 +316,7 @@ export default {
     max-width: 100%;
     color: #fff;
     box-sizing: border-box;
+    bottom: 10px;
     padding-left: 24px;
     padding-right: 24px;
     border-radius: 30px;

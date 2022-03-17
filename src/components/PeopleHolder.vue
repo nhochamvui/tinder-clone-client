@@ -5,7 +5,6 @@
         :class="{ 'people-card': !isPersonalInfo, 
         'people-card people-card-detail': isPersonalInfo}" 
     >
-        
         <router-view v-if="isLoadedRequirements()"></router-view>
         <div ref="card" class="info-container" v-if="['MakeFriends', 'Profile', 'SetGender'].includes(routeName)">
             <a v-if="showMore" style="z-index:1;right:50px" class="P(abs) B(0) Cur(p)" @click="showMore = false">

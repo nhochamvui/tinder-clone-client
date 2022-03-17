@@ -98,7 +98,7 @@ const routes = [{
             name: 'SetGender',
             path: '/app/settings/gender',
             components: {
-                default: () =>
+                child: () =>
                     import ( /* webpackChunkName: "SettingMom2" */ "../components/SetGender.vue"),
             },
             beforeEnter: (to, from) => {

@@ -1,11 +1,12 @@
 <template>
-  <router-view v-if="this.discoverySettingsGetSet != null && this.discoverySettingsGetSet.length != 0"/>
+  <router-view name="child"
+  v-if="windowWidth < 750 && this.discoverySettingsGetSet != null && this.discoverySettingsGetSet.length != 0"/>
 
   <div
     v-on:mouseup="e => mouseUpEvent(e)"
     v-on:mousemove="mouseMoveEvent"
+    v-show="['Profile','ProfileEdit','ProfileEditGender', 'Settings'].includes(routeName)"
     v-if="this.discoverySettingsGetSet != null && this.discoverySettingsGetSet.length != 0"
-    v-show="['Settings', 'Profile'].includes(routeName)"
     class="settings__container"
   >
     <div class="settings__box bg(white)">

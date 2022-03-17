@@ -1,7 +1,7 @@
 <template>
     <div class="main">
         <div class="app-bar D(flex) Al(center)" v-if="windowWidth < 750 && isUserAuthenticated && me !== undefined">
-            <div class="P(abs)" style="top:15px;left:5px">
+            <div class="P(abs)" style="top:15px;left:15px">
                 <router-link :to="{ name: 'Settings' }">
                     <img src="/icon/settings.png" style="width:30px;height:30px" alt="">
                 </router-link>
@@ -225,8 +225,6 @@ section {
 .side-bar {
     border-right: #e6eaf0 solid 1px;
     width: 25%;
-    /* min-width: 310px;
-  max-width: 375px; */
     height: 100%;
 }
 </style>
@@ -239,6 +237,8 @@ section {
     .right{
         width: 100%;
         height: 85%;
+        padding-left: 10px;
+        padding-right: 10px;
     }
     .side-bar{
         width: 100%;
