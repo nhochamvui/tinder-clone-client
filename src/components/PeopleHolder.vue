@@ -266,7 +266,10 @@ export default {
             }
 
             let dragElement = this.$refs['card'];
-            dragElement.style.animation = "swipe-right 0.4s ease forwards";
+
+            if(dragElement.style.animation === ''){
+                dragElement.style.animation = "swipe-right-rotate 0.4s ease forwards";
+            }
 
             setTimeout(() => {
                 this.$emit('onLikeClick', result.match);
@@ -276,7 +279,9 @@ export default {
             // this.dislikePerson(this.person.userID)
             let dragElement = this.$refs['card'];
             console.log('onDislikeClick',dragElement.style)
-            dragElement.style.animation = "swipe-left 0.4s ease forwards";
+            if(dragElement.style.animation === ''){
+                dragElement.style.animation = "swipe-left-rotate 0.4s ease forwards";
+            }
             setTimeout(() =>{
                 this.$emit('onDislikeClick', this.person.id);
             }, 440);
@@ -403,9 +408,15 @@ export default {
 
 <style>
 @keyframes swipe-right {
+    100% {
+        left: 120vw;
+    }
+}
+
+@keyframes swipe-right-rotate {
     0%{
-        left: 0;
-        top: 0;
+        left: 200px;
+        transform: rotate(15deg);
     }
     100% {
         left: 120vw;
@@ -413,7 +424,15 @@ export default {
 }
 
 @keyframes swipe-left {
-    
+    100% {
+        left: -120vw;
+    }
+}
+@keyframes swipe-left-rotate {
+    0%{
+        left: -200px;
+        transform: rotate(-15deg);
+    }
     100% {
         left: -120vw;
     }
