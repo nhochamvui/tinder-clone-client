@@ -5,7 +5,7 @@
   <div
     v-on:mouseup="e => mouseUpEvent(e)"
     v-on:mousemove="mouseMoveEvent"
-    v-show="['Profile','ProfileEdit','ProfileEditGender', 'Settings'].includes(routeName)"
+    v-show="['Profile','ProfileEdit','ProfileEditGender', 'SetGenderSide', 'Settings'].includes(routeName)"
     v-if="this.discoverySettingsGetSet != null && this.discoverySettingsGetSet.length != 0"
     class="settings__container"
   >

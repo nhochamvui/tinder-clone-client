@@ -6,7 +6,7 @@
         'people-card people-card-detail': isPersonalInfo}" 
     >
         <router-view v-if="isLoadedRequirements()"></router-view>
-        <div ref="card" class="info-container" v-if="['MakeFriends', 'Profile', 'SetGender'].includes(routeName)">
+        <div ref="card" class="info-container" v-if="['MakeFriends', 'Profile', 'SetGenderSide'].includes(routeName)">
             <a v-if="showMore" style="z-index:1;right:50px" class="P(abs) B(0) Cur(p)" @click="showMore = false">
                 <img style="width:30px" src="/icon/collapse.svg" alt="">            
             </a>
@@ -51,7 +51,7 @@
                     </div>
                 </div>
                 <div>
-                    <div v-if="['Profile', 'ProfileEdit', 'SetGender'].includes(routeName) || showMore">
+                    <div v-if="['Profile', 'ProfileEdit', 'SetGenderSide'].includes(routeName) || showMore">
                         <div class="myInfo Pl(10%) Bs(border-box)">
                             <span class="row">
                                 <h2 v-if="person.name">{{ person.name }}</h2><h3 v-if="person.age">{{ '  '+ person.age }}</h3>
@@ -91,7 +91,7 @@
                 </div>
             </div>
         </div>
-        <div v-if="['Profile', 'SetGender'].includes(routeName) " class="P(abs) B(0) Pb(10px) D(flex) Js(center) H(40px) W(100)"
+        <div v-if="['Profile', 'SetGenderSide'].includes(routeName) " class="P(abs) B(0) Pb(10px) D(flex) Js(center) H(40px) W(100)"
             style="background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(252,252,252,0.896796218487395) 14%, rgba(255,252,247,0) 100%);"
         >
             <router-link class="button" :to="{ name: 'ProfileEdit' }">

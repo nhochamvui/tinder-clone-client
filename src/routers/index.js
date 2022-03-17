@@ -1,11 +1,6 @@
-import { debug } from 'console';
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../components/Home.vue'
 import Login from '../components/Login.vue'
-import ModalForm from '../components/ModalForm.vue';
-import MyProfile from '../components/MyProfile.vue';
-// import MakeFriends from '../components/MakeFriends.vue'
-// import SetGender from '../components/SetGender.vue'
 import store from '../store/store.js' // your vuex store 
 // const isNotAuthenticated = (to, from, next) => {
 //     console.log('router');
