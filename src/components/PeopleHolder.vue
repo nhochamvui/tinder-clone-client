@@ -71,7 +71,7 @@
                             <span class="D(flex) Align(baseline) row info-text" v-if="person.about">{{ person.about }}</span>
                         </div>
                     </div>
-                    <div v-if="!showMore" class="foreground"></div>
+                    <div v-if="routeName == 'MakeFriends' && !showMore" class="foreground"></div>
                     <div v-if="routeName == 'MakeFriends' && !showMore"
                         v-bind:class="{'black-background': !showMore}"
                      class="tools-container">

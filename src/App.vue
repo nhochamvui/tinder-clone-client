@@ -173,6 +173,7 @@ export default {
     },
     created: function () {},
     mounted: async function () {
+
         console.log("mounted at App.vue...");
         document.addEventListener('storage', (e) =>{
             console.log('storage changed: ', e);
