@@ -10,7 +10,7 @@
             <a v-if="showMore" style="z-index:1;right:50px" class="P(abs) B(0) Cur(p)" @click="showMore = false">
                 <img style="width:30px" src="/icon/collapse.svg" alt="">            
             </a>
-            <div class="D(flex) W(100) Pb(50px) H(100) Of(scroll) Fd(column)" 
+            <div class="D(flex) W(100) Pb(50px) H(100) Of(scroll) Fd(column)" style="padding-bottom: 84px"
                 >
                 <div  class="W(100)">
                     <div 

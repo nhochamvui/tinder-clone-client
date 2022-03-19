@@ -242,6 +242,7 @@ section {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    background: var(--color--empty-background);
 }
 .side-bar {
     border-right: #e6eaf0 solid 1px;

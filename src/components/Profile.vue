@@ -3,8 +3,6 @@
   v-if="windowWidth < 750 && this.discoverySettingsGetSet != null && this.discoverySettingsGetSet.length != 0"/>
 
   <div
-    v-on:mouseup="e => mouseUpEvent(e)"
-    v-on:mousemove="mouseMoveEvent"
     v-show="['Profile','ProfileEdit','ProfileEditGender', 'SetGenderSide', 'Settings'].includes(routeName)"
     v-if="this.discoverySettingsGetSet != null && this.discoverySettingsGetSet.length != 0"
     class="settings__container"
@@ -34,9 +32,8 @@
         ></span>
       </div>
       <input class="slider2" type="range"
-        v-bind:value="distancePref"
+        v-model="distancePref"
         v-bind:style="'background-size: ' + (distancePref - distancePrefMin)*100/(distancePrefMax - distancePrefMin) + '% 100%'"
-        v-on:input="onSliderChange"
         v-on:mouseup="onMouseUp"
         v-bind:min="distancePrefMin" v-bind:max="distancePrefMax"
       >
@@ -77,19 +74,19 @@
           v-text="this.agePref"
         ></span>
       </div>
-      <div
-          class="margin-top-bottom"
-          v-on:mousedown="(e) => {mouseDownEvent(e, 
-          'age-divider', 'age-tracker', {sliderName: 'age-slider1', indicatorPrefName: 'minAgePref'}, 
-          {sliderName: 'age-slider2', indicatorPrefName: 'maxAgePref'}, 18, 100, 4)}"
-          id="divider"
+      <div class="settings__box--row doubleslider__container">
+        <input class="double__slider-head slider2 double__slider" type="range"
+          v-model="minAgePref"
+          v-on:mouseup="onMouseUp"
+          v-bind:min="minAgeDefault" v-bind:max="(maxAgeDefault - minAgeDefault)/2 - 1"
+          v-bind:style="'background-size: ' + ((maxAgeDefault - minAgeDefault)/2 - 1 - minAgePref)*100/((maxAgeDefault - minAgeDefault)/2 - 1 - minAgeDefault) + '% 100%'"
         >
-        <div class="settings__distance--slider">
-          <div ref="age-divider" class="settings__distance--divider"></div>
-          <button ref="age-slider1" class="slider"></button>
-          <button ref="age-slider2" class="slider"></button>
-          <div data-tracker-style="2-direction" ref="age-tracker" class="tracker"></div>
-        </div>
+        <input class="tail slider2 double__slider" type="range" style="right:0"
+          v-model="maxAgePref"
+          v-on:mouseup="onMouseUp"
+          v-bind:min="(maxAgeDefault - minAgeDefault)/2" v-bind:max="maxAgeDefault"
+          v-bind:style="'background-size: ' + (maxAgePref - (maxAgeDefault - minAgeDefault)/2)*100/(maxAgeDefault - (maxAgeDefault - minAgeDefault)/2) + '% 100%'"
+        >
       </div>
       <div class="settings__box--row">
         <label class="settings__text--primary" for=""
@@ -168,146 +165,15 @@ export default {
       }
       this.$emit('onSetGenderPrefClick')
     },
-    onSliderChange: function(e){
-      let target = e.target;
-      this.distancePref = target.value;
+    onChange(e){
+      let val = e.target.value;
+      this
     },
     onMouseUp: function(e){
       let delaySecond = 1000;
       setTimeout(()=>{
         this.saveSettings();
       }, delaySecond);
-    },
-    mouseDownEvent: function (e, dividerName, trackerName, sliderRefStart, sliderRefEnd, minIndicatorValue = -1, maxIndicatorValue = -1, minDeltaValue = -1) {
-      let slider = null;
-      let tracker = this.$refs[trackerName];
-      this.currentDividerNameGetSet = dividerName;
-      this.currentTrackerNameGetSet = trackerName;
-
-      if(minIndicatorValue != -1){
-        this.minIndicatorValue = minIndicatorValue;
-      }
-
-      if(maxIndicatorValue != -1){
-        this.maxIndicatorValue = maxIndicatorValue;
-      }
-
-      if(minDeltaValue != -1){
-        this.minDeltaValue = minDeltaValue;
-      }
-
-      if(sliderRefEnd === undefined){
-        slider = this.$refs[sliderRefStart.sliderName];
-        this.currentSliderNameGetSet = sliderRefStart.sliderName;
-        this.currentIndicatorPrefName = sliderRefStart.indicatorPrefName;
-      }
-      else{
-        let mousePos = e.clientX;
-        let sliderStartPos = this.$refs[sliderRefStart.sliderName].offsetLeft;
-        let sliderEndPos = this.$refs[sliderRefEnd.sliderName].offsetLeft;
-        if(Math.abs(mousePos - sliderStartPos) < Math.abs(mousePos - sliderEndPos)){
-          this.currentSliderNameGetSet = sliderRefStart.sliderName;
-          this.currentIndicatorPrefName = sliderRefStart.indicatorPrefName;
-          this.currentStartSliderName = sliderRefStart.sliderName;
-          slider = this.$refs[this.currentSliderNameGetSet];
-
-          if(tracker.getAttribute('data-tracker-style') === '2-direction'){
-            tracker.style.marginLeft = sliderStartPos + 'px';
-          }
-        }
-        else{
-          this.currentSliderNameGetSet = sliderRefEnd.sliderName;
-          this.currentIndicatorPrefName = sliderRefEnd.indicatorPrefName;
-          slider = this.$refs[this.currentSliderNameGetSet];
-        }
-      }
-
-      let borderColor = "#fd546c";
-      slider.style.borderColor = borderColor;
-      this.isMouseDown = true;
-
-      let currentSlider = this.$refs[this.currentSliderNameGetSet];
-      let mouseX = e.clientX;
-      console.log(mouseX)
-      currentSlider.style.marginLeft = "" + (mouseX-currentSlider.offsetWidth) + "px";
-      tracker.style.width = mouseX + "px";
-    },
-    mouseUpEvent: function (e) {
-      if(!this.isMouseDown){
-        return;
-      }
-
-      // let currentSlider = this.$refs[this.currentSliderNameGetSet];
-      // if(currentSlider !== undefined){
-      //   this.isMouseDown = false;
-      //   currentSlider.style.borderColor = "";
-      // }
-      // let delaySecond = 1000;
-      // setTimeout(()=>{
-      //   console.log('here1')
-      //   this.saveSettings();
-      // }, delaySecond)
-    },
-    mouseMoveEvent: function (e) {
-      if(this.isMouseDown){
-        let divider = this.$refs[this.currentDividerNameGetSet];
-        let currentSlider = this.$refs[this.currentSliderNameGetSet];
-        let tracker = this.$refs[this.currentTrackerNameGetSet];
-        let offsetLeft = divider.offsetLeft;
-        let offsetWidth = divider.offsetWidth;
-        let mouseX = e.clientX;
-
-        // set limit for mouseX
-        if(mouseX < offsetLeft){
-          mouseX = offsetLeft;
-        }
-        else if(mouseX > offsetWidth){
-          mouseX = offsetWidth;
-        }
-
-        // set indicator value
-        let range = mouseX / offsetWidth;
-        let indicatorValue = Math.round(range * 100);
-        // if(this.minIndicatorValue != -1 && indicatorValue < this.minIndicatorValue){
-        //   indicatorValue = this.minIndicatorValue;
-        // }
-        // else if(this.maxIndicatorValue != -1 && indicatorValue > this.maxIndicatorValue){
-        //   indicatorValue = this.maxIndicatorValue;
-        // }
-
-        //set tracker's pos
-        if(tracker.getAttribute('data-tracker-style') === "2-direction"){
-          let widthUnit = offsetWidth / (this.maxIndicatorValue - this.minIndicatorValue);
-          indicatorValue = Math.round((range * (this.maxIndicatorValue - this.minIndicatorValue)) + this.minIndicatorValue);
-          if(this.minDeltaValue != -1){
-            let minWidthAllow = this.minDeltaValue * widthUnit;
-            let startSlider = this.$refs[this.currentStartSliderName];
-            if(currentSlider === startSlider){
-              let delta = tracker.offsetLeft - mouseX;
-              if(tracker.offsetWidth + delta >=  minWidthAllow){
-                this[this.currentIndicatorPrefName] = indicatorValue;
-                currentSlider.style.marginLeft = mouseX + "px";
-                tracker.style.marginLeft = currentSlider.offsetLeft + 'px';
-                tracker.style.width = (tracker.offsetWidth + delta) + "px";
-              }
-            }
-            else{
-              let delta = this.$refs[this.currentStartSliderName] !== undefined ? this.$refs[this.currentStartSliderName].offsetLeft : 0;
-              if(mouseX - delta >= minWidthAllow){
-                this[this.currentIndicatorPrefName] = indicatorValue;
-                currentSlider.style.marginLeft = mouseX + "px";
-                tracker.style.width = mouseX - delta + "px";
-              }
-            }
-          }
-        }
-        else{
-          // set slider and tracker pos
-          this[this.currentIndicatorPrefName] = indicatorValue;
-          currentSlider.style.marginLeft = "" + (mouseX-currentSlider.offsetWidth) + "px";
-          tracker.style.width = mouseX + "px";
-        }
-      }
     },
     mouseOverEvent: function(e){
       let me = e.target;
@@ -338,21 +204,6 @@ export default {
     initializePrefChecks: function(){
       this.settingCheckerClick('distanceToogle', 'distancePrefCheck', this.distancePrefCheck);
       this.settingCheckerClick('ageToogle', 'agePrefCheck', this.agePrefCheck);
-    },
-    initializeAgePref: function(sliderRefNameStart, sliderRefNameEnd, dividerName, trackerName){
-      let sliderStart = this.$refs[sliderRefNameStart];
-      let sliderEnd = this.$refs[sliderRefNameEnd];
-      let tracker = this.$refs[trackerName];
-      let dividerWidth = this.$refs[dividerName].offsetWidth;
-
-      let rangeStart = Math.round(((this.minAgePref - this.minAgeDefault) / (this.maxAgeDefault - this.minAgeDefault)) * dividerWidth);
-      sliderStart.style.marginLeft = rangeStart + 'px';
-      let rangeEnd = Math.round(((this.maxAgePref - this.minAgeDefault) / (this.maxAgeDefault - this.minAgeDefault)) * dividerWidth);
-      sliderEnd.style.marginLeft = rangeEnd + 'px';
-
-      tracker.style.marginLeft = sliderStart.offsetLeft + 'px';
-      // tracker.style.marginRight = sliderEnd.offsetLeft + 'px';
-      tracker.style.width = (sliderEnd.offsetLeft - sliderStart.offsetLeft) + 'px';
     },
   },
   computed: {
@@ -442,43 +293,18 @@ export default {
     },
     minAgePref: {
       get(){
-        if(this.getDiscoverySettings() != null){
-          let minAge = this.getDiscoverySettings().minAge;
-          if(typeof minAge == 'number'){
-            return minAge;
-          }
-        }
-        return 18;
+        return this.getSettings()?.minAge;
       },
       set(newVal){
-        if(newVal < 18){
-          newVal = 18;
-        }
-        else if(newVal > (this.maxAgePref - 4)){
-          newVal = this.maxAgePref - 4;
-        }
-        this.getDiscoverySettings().minAge = newVal;
+        this.getSettings().minAge = newVal;
       }
     },
-    maxAgePref: {
+    maxAgePref:{
       get(){
-        if(this.getDiscoverySettings() != null){
-          let maxAge = this.getDiscoverySettings().maxAge;
-          if(typeof maxAge == 'number'){
-            return maxAge;
-          }
-        }
-        return 100;
+        return this.getSettings()?.maxAge;
       },
       set(newVal){
-        if(newVal > 100){
-          newVal  = 100;
-        }
-        else if(newVal < (this.minAge + 4)){
-          newVal = this.minAge + 4;
-        }
-
-        this.getDiscoverySettings().maxAge = newVal;
+        this.getSettings().maxAge = newVal;
       }
     },
     agePref: {
@@ -558,10 +384,6 @@ export default {
   mounted: function () {
     console.log("mounted at profile, ", this.getSettings() != null && this.getSettings() != undefined);
     this.initializePrefChecks();
-    this.initializeAgePref('age-slider1', 'age-slider2', 'age-divider', 'age-tracker');
-    // if (this.discoverySettingsGetSet.length == 0) {
-    //   this.fetchDiscoverySettings();
-    // }
   },
 };
 </script>
@@ -686,6 +508,21 @@ export default {
 }
 .slider:hover {
   border: #fd546c solid 1px;
+}
+
+.doubleslider__container{
+  width: 100%;
+  position: relative;
+  margin-bottom: 10%;
+  margin-top: 10%;
+}
+
+.double__slider{
+  position: absolute;
+  width: 50%;
+}
+.double__slider-head{
+  background-position-x: right;
 }
 .tracker {
   height: 2px;
