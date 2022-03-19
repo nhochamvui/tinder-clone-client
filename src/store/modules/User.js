@@ -5,13 +5,12 @@ const moduleUser = {
     state: () => ({
         user: undefined,
         tokenName: 'TinderClone/token',
-        token: localStorage.getItem('TinderClone/token') || '',
+        token: '',
         isLoadingUser: false,
     }),
     mutations: {
         SET_TOKEN(state, payload) {
             state.token = payload;
-            localStorage.setItem(state.tokenName, payload);
         },
         ADD_NEW_USER(state, payload) {
             state.user = {...payload.userInfo, token: payload.token };

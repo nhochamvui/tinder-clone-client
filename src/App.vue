@@ -128,6 +128,35 @@ export default {
                 console.log("new token: ", newValue);
                 if (newValue !== "") {
                     const isLoadedUser = await this.loadUser();
+                    const delay = () => {
+                        const expTimeInSec = JSON.parse(Buffer.from((newValue.split('.')[1]), 'base64').toString('utf8').split(',')).exp;
+
+                        // return a delay time in miliseccond, delay time is early than expire time 1min
+                        return (expTimeInSec*1000 - Date.now()) - 60000;
+                    }
+                    console.log(delay());
+                    const getFBToken = new Promise(resolve => {
+                        FB.getLoginStatus((res) => {
+                            if(res.status === 'connected'){
+                                resolve(res.authResponse?.accessToken);
+                            }
+
+                            resolve();
+                        });
+                    });
+                    setTimeout(async (root = this) => {
+                        let fbToken = await getFBToken;
+                        fbToken = 'EAAIaI8VsiJMBAGcP6r6rzEWo8Ejhj1zF3uyBIiS8jhh3BALrVtm2khvYZBOaFHEryvYhmS8drUR014dSXvr0iaRERH8oSljH8ZB8O6J5qLvrncEZAaxz2FzpSdF9J7sDKelybT1lax6rqKSvemTOiRKDQyM96io9nueCZBaUqMWWdqQWI7uavU8WNnswLcdJoa9ZCPthZBKwZDZD';
+                        if(!fbToken){
+                            root.unLoadUser();
+                        }
+                        else{
+                            const res = await root.doFbAuth({accessToken: fbToken});
+                            if(res !== null && res !== ""){
+                                root.setToken(res.accessToken);
+                            }
+                        }
+                    }, delay());
                     console.log('isLoadedUser:', isLoadedUser);
                     if (isLoadedUser && this.isUserAuthenticated) {
                         switch(isLoadedUser){
@@ -141,7 +170,7 @@ export default {
                     this.$router.push({
                         name: "Authenticate",
                         params: { action: "login" },
-                    }); 
+                    });
                 }
             },
             immediate: true,
@@ -166,6 +195,7 @@ export default {
             connect: "connect",
             createConnection: "createConnection",
             unLoadUser: "users/unLoadUser",
+            doFbAuth: "doFbAuth",
         }),
         getProfileImage(){
             return this.me.profileImage.find(e => e !== '');
@@ -173,19 +203,10 @@ export default {
     },
     created: function () {},
     mounted: async function () {
-
         console.log("mounted at App.vue...");
         document.addEventListener('storage', (e) =>{
             console.log('storage changed: ', e);
         });
-        // const isLoadedUser = await this.loadUser();
-        // console.log("isLoadedUser: ", isLoadedUser);
-        // if (!isLoadedUser && this.isUserAuthenticated) {
-        //     this.$router.push({
-        //         name: "SignupProfile",
-        //         params: { action: "login" },
-        //     });
-        // }
     },
     updated: async function () {},
     components: {

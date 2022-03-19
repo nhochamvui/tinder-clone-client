@@ -200,7 +200,6 @@ export default {
                 this.loginInfo.user_name = "unclebob";
                 this.loginInfo.password = "1234";
 
-                // localStorage.setItem("TinderClone/token", response.data);
                 this.setToken(response.data);
 
                 console.log("after login, going to App... ", response.data);

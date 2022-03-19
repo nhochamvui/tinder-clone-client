@@ -25,7 +25,7 @@ export function initFacebookSdk() {
             });
 
             FB.getLoginStatus(async({ authResponse }) => {
-                console.log('cookie', authResponse)
+                console.log('cookie', authResponse);
                 if (authResponse && authResponse.accessToken) {
                     let res = await doFbAuth({ accessToken: authResponse.accessToken })
                     if (res !== null && res !== "") {
@@ -35,10 +35,8 @@ export function initFacebookSdk() {
                     } else {
                         FB.api("/me/permissions", "delete", null, () => FB.logout());
                     }
-                    resolve();
-                } else {
-                    resolve();
                 }
+                resolve();
             });
         };
 

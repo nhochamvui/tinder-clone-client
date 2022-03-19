@@ -60,11 +60,6 @@ export default {
             return true;
         },
         onLoad(e) {
-            try {
-                console.log("onLoad: ", this.imgSrc);
-            } catch (e) {
-                console.log('onload ex: ', e)
-            }
         },
         onComplete(e) {
             console.log("onComplete: ", this.imgSrc);

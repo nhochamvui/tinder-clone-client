@@ -65,7 +65,6 @@ export default {
             getDiscoverySettings: "getSettings",
         }),
         setGenderClick: function(gender){
-            debugger
             this.gender = gender;
             console.log('gender: ', this.gender);
         }

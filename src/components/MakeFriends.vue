@@ -248,6 +248,7 @@ export default {
     border-radius: 50%;
     border: white 2px solid;
     box-shadow: 0 2px 5px 0 rgb(0 0 0 / 28%);
+    object-fit: cover;
 }
 
 .congrats-text{

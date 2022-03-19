@@ -329,7 +329,8 @@ export default {
           }
           else{
             console.log("append: ", history);
-            if(history.lastChild && history.lastChild.className.includes('left')){
+            // in case of message from them -> hide avatar of previous message.
+            if(message.fromID == this.matchId && history.lastChild && history.lastChild.className.includes('left')){
               history.lastChild.querySelector('.avatar').style.visibility = 'hidden';
             }
             history.appendChild(bubbleContainer);
@@ -363,6 +364,10 @@ export default {
           // co tin nhan moi
           // this.messages.push(message);
           this.renderMessage(message, false);
+        });
+
+        this.getConnection().on('NewMatch', (matchInfo) => {
+          console.log('Hub -> new match:', matchInfo);
         });
 
         this.getConnection().on('GlobalMessage', (message) => {
