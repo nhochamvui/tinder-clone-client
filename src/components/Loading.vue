@@ -41,10 +41,6 @@ export default {
         }),
     },
     created: function () {
-        // console.log(this.$route.name)
-        // if(this.$route.name == 'App'){
-        //     this.$router.replace('/app/makefriends');
-        // }
     },
     mounted: function () {
         console.log('mounted at Loading.vue......................')
@@ -52,9 +48,6 @@ export default {
     },
     updated: function(){
         console.log('updated at Loading.vue...')
-        // if(this.$route.name == 'App'){
-        //     this.$router.replace('/app/makefriends');
-        // }
     },
 };
 </script>

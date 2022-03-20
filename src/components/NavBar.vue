@@ -18,7 +18,6 @@ export default {
     },
     watch: {
       isUserAuthenticated: function(newVal, oldVal){
-        console.log('was ', oldVal, 'now ', newVal);
       }
     },
 }

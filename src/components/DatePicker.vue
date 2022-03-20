@@ -158,7 +158,6 @@ export default {
             }
         },
         isValidDate(year, month, day){
-            console.log(day, month, year)
             if(isNaN(day) || isNaN(month) || isNaN(year)){
                 return false;
             }

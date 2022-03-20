@@ -35,7 +35,6 @@ export default {
             get(){
 
                 if(!this.dataSrc || this.dataSrc === ''){
-                    console.log('getting imageSrc: ', this.dataSrc)
                     return "/img/default_profile_picture.jpg";
                 }
                 return this.dataSrc;
@@ -47,7 +46,6 @@ export default {
     },
     watch: {
         dataSrc: function(newValue, oldValue){
-            // console.log('Image, newValue: ', newValue, ' | oldValue: ', oldValue);
         }
     },
     methods: {
@@ -62,7 +60,6 @@ export default {
         onLoad(e) {
         },
         onComplete(e) {
-            console.log("onComplete: ", this.imgSrc);
         },
         setImageSrc(src){
             this.imageSrc = src;

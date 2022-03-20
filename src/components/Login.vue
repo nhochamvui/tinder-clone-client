@@ -210,7 +210,6 @@ export default {
         },
         async init() {
             console.log("init login.vue");
-            console.log(this.test)
             if (this.$route.params.action == "login") {
                 const isAuthenticated =
                     this.$store.getters["users/isAuthenticated"];
@@ -228,21 +227,6 @@ export default {
         }
     },
     created: function () {
-        FB.getLoginStatus((response) => {
-            if (response.status === "connected") {
-                console.log('fb cookie: ',response);
-                // localStorage.setItem("TinderClone/token", response.authResponse.accessToken);
-                // this.setToken(response.authResponse.accessToken);
-                // this.$router.push({ name: "MakeFriends" });
-            } else if (response.status === "not_authorized") {
-                console.log(response.status);
-            } else {
-                console.log(response.status);
-                // The user isn't logged in to Facebook. You can launch a
-                // login dialog with a user gesture, but the user may have
-                // to log in to Facebook before authorizing your application.
-            }
-        });
     },
     mounted: function () {
         this.init();

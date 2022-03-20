@@ -178,7 +178,6 @@ export default {
     watch: {
         routeName: {
             handler: function (name) {
-                console.log('routeName: ', name);
                 if (name === "Messages" || name === "MakeFriends") {
                     // this.fetchMatches();
                 }

@@ -153,16 +153,6 @@ const routes = [{
         }
     },
     {
-        name: 'SetLocation',
-        path: '/app/settings/location',
-        components: {
-            default: () =>
-                import ( /* webpackChunkName: "MyProfile" */ "../components/MyProfile.vue"),
-            side: (e) =>
-                import ( /* webpackChunkName: "SetGender" */ "../components/SetLocation.vue")
-        }
-    },
-    {
         name: 'Privacy',
         path: '/privacy',
         components: {

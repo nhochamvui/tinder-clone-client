@@ -13,7 +13,6 @@ export default {
     methods: {
       init () {
         const isAuthenticated = this.$store.getters['users/isAuthenticated'];
-        console.log('home.vue: ');
         if (isAuthenticated){
           this.$router.push({ name: "MakeFriends" });
         }

@@ -7,7 +7,6 @@ const signalR = require('@microsoft/signalr');
 window.addEventListener('resize', () => {
     store.dispatch('setWindowWidth');
     store.dispatch('setWindowHeight');
-    console.log('resize')
 });
 
 const store = createStore({

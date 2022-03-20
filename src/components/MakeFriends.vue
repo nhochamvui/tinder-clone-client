@@ -107,18 +107,11 @@ export default {
   },
   watch: {
     routeValueChange: async function (newVal) {
-      console.log("route value change: ", newVal);
       if (newVal == "MakeFriends") {
         this.isPersonalData = false;
         console.log('routeValueChange, fetch people');
         this.fetchPeople();
       } 
-      // else {
-      //   this.isPersonalData = true;
-      //   let myProfile = await this.getMyProfile();
-      //   this.peopleGetSet = [myProfile];
-      // }
-      console.log("route: ", newVal, " | this.people: ", this.people);
     },
     peopleGetSet: function (newValue) {
       this.peopleGetSet = newValue;
@@ -128,7 +121,6 @@ export default {
     discoverySettings: function(){
       let settings = this.getDiscoverySettings();
       if(settings !== null && this.routeValueChange == 'MakeFriends'){
-        console.log('setting changed, fetch people');
         this.fetchPeople();
       }
     }
@@ -281,6 +273,7 @@ export default {
   width: 100%;
   justify-content: center;
   align-items: center;
+  background: var(--color--empty-background);
 }
 
 .side-bar {

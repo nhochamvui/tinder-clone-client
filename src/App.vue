@@ -92,7 +92,6 @@ export default {
             handler: async function (newVal) {
                 console.log("at App, me changed:", newVal);
                 if(newVal){
-                    // await this.setUserProfileImages();
                     this.fetchSettings();
                     this.createConnection();
                     this.connect();
@@ -101,7 +100,6 @@ export default {
             immediate: true,
         },
         isLoading: function (newValue) {
-            console.log("isLoading: ", newValue);
         },
         isUserAuthenticated: {
             handler: function (isAuthenticated) {
@@ -109,68 +107,70 @@ export default {
                     "at App isUserAuthenticated changes: ",
                     isAuthenticated
                 );
-                if (isAuthenticated) {
-                    // this.setUserProfileImages(); call inside loadUser
-                    // this.fetchSettings();
-                    // this.createConnection();
-                    // this.connect();
-                } else {
-                    this.$router.push({
-                        name: "Authenticate",
-                        params: { action: "login" },
-                    });
-                }
             },
             immediate: true,
         },
         token: {
             handler: async function (newValue) {
-                console.log("new token: ", newValue);
-                if (newValue !== "") {
-                    const isLoadedUser = await this.loadUser();
-                    const delay = () => {
-                        const expTimeInSec = JSON.parse(Buffer.from((newValue.split('.')[1]), 'base64').toString('utf8').split(',')).exp;
-
-                        // return a delay time in miliseccond, delay time is early than expire time 1min
-                        return (expTimeInSec*1000 - Date.now()) - 60000;
-                    }
-                    console.log(delay());
-                    const getFBToken = new Promise(resolve => {
-                        FB.getLoginStatus((res) => {
-                            if(res.status === 'connected'){
-                                resolve(res.authResponse?.accessToken);
-                            }
-
-                            resolve();
-                        });
+                console.log("new token: ", newValue, this.routeName);
+                const getFBToken = new Promise(resolve => {
+                    FB.getLoginStatus((res) => {
+                        if(res.status === 'connected'){
+                            resolve(res.authResponse?.accessToken);
+                        }
+                        resolve();
                     });
-                    setTimeout(async (root = this) => {
-                        let fbToken = await getFBToken;
-                        fbToken = 'EAAIaI8VsiJMBAGcP6r6rzEWo8Ejhj1zF3uyBIiS8jhh3BALrVtm2khvYZBOaFHEryvYhmS8drUR014dSXvr0iaRERH8oSljH8ZB8O6J5qLvrncEZAaxz2FzpSdF9J7sDKelybT1lax6rqKSvemTOiRKDQyM96io9nueCZBaUqMWWdqQWI7uavU8WNnswLcdJoa9ZCPthZBKwZDZD';
-                        if(!fbToken){
-                            root.unLoadUser();
+                });
+                if (newValue === "") {
+                    let fbToken = await getFBToken;
+                    if(fbToken){
+                        const res = await this.doFbAuth({accessToken: fbToken});
+                        if(res !== null && res !== ""){
+                            this.setToken(res.accessToken);
                         }
-                        else{
-                            const res = await root.doFbAuth({accessToken: fbToken});
-                            if(res !== null && res !== ""){
-                                root.setToken(res.accessToken);
-                            }
-                        }
-                    }, delay());
-                    console.log('isLoadedUser:', isLoadedUser);
+                    }
+                    else{
+                        this.$router.push({name: "Authenticate", params: { action: "login" }});
+                    }
+                }
+                else {
+                    const isLoadedUser = await this.loadUser();
                     if (isLoadedUser && this.isUserAuthenticated) {
                         switch(isLoadedUser){
                             case 404:
                                 this.unLoadUser();
                                 break;
+                            case 200:
+                            {
+                                const delay = () => {
+                                    const expTimeInSec = JSON.parse(Buffer.from((newValue.split('.')[1]), 'base64').toString('utf8').split(',')).exp;
+                                    // return a delay time in miliseccond, delay time is early than expire time 1min
+                                    return (expTimeInSec*1000 - Date.now()) - 60000;
+                                }
+                                setTimeout(async (root = this) => {
+                                    let fbToken = await new Promise(resolve => {
+                                        FB.getLoginStatus((res) => {
+                                            if(res.status === 'connected'){
+                                                resolve(res.authResponse?.accessToken);
+                                            }
+                                            resolve();
+                                        });
+                                    });
+                                    if(!fbToken){
+                                        root.unLoadUser();
+                                    }
+                                    else{
+                                        const res = await root.doFbAuth({accessToken: fbToken});
+                                        if(res !== null && res !== ""){
+                                            root.setToken(res.accessToken);
+                                        }
+                                    }
+                                }, delay());
+                                break;
+                            }
                         }
                     }
-                }
-                else{
-                    this.$router.push({
-                        name: "Authenticate",
-                        params: { action: "login" },
-                    });
+                    
                 }
             },
             immediate: true,
@@ -242,7 +242,6 @@ section {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    background: var(--color--empty-background);
 }
 .side-bar {
     border-right: #e6eaf0 solid 1px;

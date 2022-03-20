@@ -379,10 +379,9 @@ export default {
     },
   },
   created: function(){
-    console.log(this.$refs);
   },
   mounted: function () {
-    console.log("mounted at profile, ", this.getSettings() != null && this.getSettings() != undefined);
+    console.log("mounted at profile");
     this.initializePrefChecks();
   },
 };

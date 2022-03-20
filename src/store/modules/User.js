@@ -72,7 +72,6 @@ const moduleUser = {
                 const tokenContent = JSON.parse(Buffer.from((token.split('.')[1]), 'base64').toString('utf8').split(','));
                 if (tokenContent.exp >= (Date.now() / 1000)) {
                     try {
-                        console.log(process.env.VUE_APP_HOST_URL)
                         let response = await axios.get(process.env.VUE_APP_HOST_URL + '/api/profile/', {
                             headers: {
                                 'Authorization': 'Bearer ' + token,
@@ -111,7 +110,6 @@ const moduleUser = {
         },
         unLoadUser({ commit, state }) {
             console.log('unload user');
-            localStorage.removeItem(state.tokenName);
             commit('unLoadUser');
         },
         async setProfileImages(context) {

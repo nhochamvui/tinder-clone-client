@@ -46,11 +46,8 @@ export default {
     routeValueChange: function (newVal) {
       if (newVal == "MakeFriends") {
         this.matchesGetSet = this.getMatches();
-      } else if (newVal == "Profile") {
-        // let myProfile = await this.getMyProfile();
-        // this.peopleGetSet = [ myProfile ];
-        console.log("");
       }
+      
       console.log("this.matches: ", this.matches);
     },
   },

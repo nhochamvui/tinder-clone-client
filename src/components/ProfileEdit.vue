@@ -202,7 +202,6 @@ export default {
             isLoadedRequirements: "isLoadedRequirements",
         }),
         getMyAvatar(index) {
-            console.log(this.profileImages[index]);
             if (this.profileImages[index] && this.profileImages[index] !== "") {
                 return this.BASE_PHOTO_URL + this.profileImages[index];
             }

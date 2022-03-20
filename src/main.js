@@ -7,9 +7,6 @@ import store from './store/store.js';
 function startApp(res) {
     const app = createApp(App)
         .use(router).use(store).mount('#app');
-    if (res) {
-        app.setToken(res);
-    }
 }
 initFacebookSdk().then((res) => {
     startApp(res);

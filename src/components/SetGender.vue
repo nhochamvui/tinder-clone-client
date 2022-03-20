@@ -20,7 +20,6 @@ import { mapActions, mapGetters } from 'vuex';
 export default {
     name: "SetGender",
     setup(){
-        console.log('setgender here');
     },
     data() {
         return {
@@ -52,7 +51,6 @@ export default {
     },
     watch: {
         gender: function(){
-            console.log('gender changed');
             this.saveSettings();
         }
     },
@@ -66,7 +64,6 @@ export default {
         }),
         setGenderClick: function(gender){
             this.gender = gender;
-            console.log('gender: ', this.gender);
         }
     },
     mounted: function () {

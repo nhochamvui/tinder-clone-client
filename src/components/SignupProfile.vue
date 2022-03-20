@@ -172,7 +172,6 @@ export default {
             }
         },
         convertToBirthday(data){
-            console.log(data)
             let birthDay = { day: String, month: String, year: String };
             if(!data){
                 return birthDay;

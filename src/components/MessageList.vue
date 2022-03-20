@@ -120,7 +120,6 @@ export default {
     },
     watch: {
         messageList: function (newValue, oldValue) {
-            // console.log("messagelist changed: ", newValue, oldValue);
         },
     },
     methods: {

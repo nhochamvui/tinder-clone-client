@@ -124,10 +124,6 @@ export default {
       matchId: {
         get(){
           console.log('param matchID: ', this.$route.params.matchID)
-          // if(this.$route.params.matchID){
-          //   return this.$route.params.matchID;
-          // }
-          // return 2;
           return this.$route.params.matchID;
         }
       },
@@ -167,7 +163,6 @@ export default {
       rootHeight: {
         get(){
           let conversationHistory = this.$refs['conversation-history'];
-          console.log('root height: ', conversationHistory.height);
           if(conversationHistory){
             return conversationHistory.height;
           }
@@ -178,8 +173,6 @@ export default {
     watch: {
       messages: {
         handler: function(newValue, oldValue){
-          // console.log('messages new: ', newValue)
-          // console.log('messages old: ', oldValue)
           let conversationHistory = this.$refs['conversation-history'];
 
           if(newValue){
@@ -328,7 +321,6 @@ export default {
             history.prepend(bubbleContainer);
           }
           else{
-            console.log("append: ", history);
             // in case of message from them -> hide avatar of previous message.
             if(message.fromID == this.matchId && history.lastChild && history.lastChild.className.includes('left')){
               history.lastChild.querySelector('.avatar').style.visibility = 'hidden';
@@ -368,10 +360,6 @@ export default {
 
         this.getConnection().on('NewMatch', (matchInfo) => {
           console.log('Hub -> new match:', matchInfo);
-        });
-
-        this.getConnection().on('GlobalMessage', (message) => {
-          console.log('GlobalMessage: ', message);
         });
       },
       historyMouseOver: function(e){
@@ -414,13 +402,11 @@ export default {
       },
     },
     mounted: function(){
-      console.log('mounted messages: ', this.$route.name);
+      console.log('mounted messages');
       console.log('this.matchID: ', this.matchID)
       this.registerEvent();
-      // this.connect();
     },
     updated: function(){
-      console.log('updated messages');
     }
 }
 </script>

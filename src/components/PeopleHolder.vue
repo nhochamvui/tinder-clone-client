@@ -230,7 +230,6 @@ export default {
                         thisRef.onLikeClick();
                     }
                 }
-                console.log('mouseup',dragElement.style)
                 document.onmouseup = null;
                 document.onmousemove = null;
             }
@@ -340,7 +339,6 @@ export default {
                 return '';
             },
             set(val){
-                console.log('set bg', val);
             }
         },
         isShowNextButton: function(){
