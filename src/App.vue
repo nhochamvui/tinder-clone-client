@@ -124,9 +124,13 @@ export default {
                 if (newValue === "") {
                     let fbToken = await getFBToken;
                     if(fbToken){
-                        const res = await this.doFbAuth({accessToken: fbToken});
+                        const res = await this.doFbAuth(fbToken);
                         if(res !== null && res !== ""){
                             this.setToken(res.accessToken);
+                        }
+                        else{
+                            FB.api("/me/permissions", "delete", null, () =>{ FB.logout();} );
+                            this.$router.push({name: "Authenticate", params: { action: "login" }});
                         }
                     }
                     else{
@@ -160,7 +164,7 @@ export default {
                                         root.unLoadUser();
                                     }
                                     else{
-                                        const res = await root.doFbAuth({accessToken: fbToken});
+                                        const res = await root.doFbAuth(fbToken);
                                         if(res !== null && res !== ""){
                                             root.setToken(res.accessToken);
                                         }

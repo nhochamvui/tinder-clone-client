@@ -144,9 +144,7 @@ export default {
         loginCallback: async function (response) {
             let authResponse = response.authResponse;
             if (authResponse) {
-                const res = await this.doFbAuth({
-                    accessToken: authResponse.accessToken,
-                });
+                const res = await this.doFbAuth(authResponse.accessToken);
                 if (res !== null) {
                     if (res.accessToken) {
                         this.setToken(res.accessToken);

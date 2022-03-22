@@ -315,7 +315,7 @@ const store = createStore({
         },
         async doFbAuth(context, fbToken) {
             try {
-                let response = await axios.post(process.env.VUE_APP_HOST_URL + '/api/users/fbauth', fbToken);
+                let response = await axios.post(process.env.VUE_APP_HOST_URL + '/api/users/fbauth', { accessToken: fbToken });
                 switch (response.status) {
                     case 200:
                         console.log('response auth:', response)

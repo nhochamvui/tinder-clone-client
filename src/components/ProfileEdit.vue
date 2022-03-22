@@ -346,6 +346,7 @@ textarea:focus-visible {
     height: 100%;
     border-radius: 10px;
     background-size: cover;
+    background-position: center;
 }
 .button {
     position: absolute;
