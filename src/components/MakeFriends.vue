@@ -18,9 +18,10 @@
     </Modal>
     <div class="W(100%) H(100%) D(flex) Jc(center) Al(center) P(relative)" v-if="people.length > 0">
       <PeopleHolder
-        v-for="person of people"
+        v-for="(person, index) of people"
         v-bind:key="person.id"
         :personData="person"
+        :zIndex="index"
         :isPersonalData="false"
         v-on:onLikeClick="onLikeClick"
         v-on:onDislikeClick="onDislikeClick"

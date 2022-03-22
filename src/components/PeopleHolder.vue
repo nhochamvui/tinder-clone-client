@@ -1,5 +1,6 @@
 <template>
     <div
+        v-bind:style="'z-index:'+zIndex"
         v-on:mouseover="showArrowButton"
         v-on:mouseleave="hideArrowButton" 
         :class="{ 'people-card': !isPersonalInfo, 
@@ -7,7 +8,7 @@
     >
         <router-view v-if="isLoadedRequirements()"></router-view>
         <div ref="card" class="info-container" v-if="['MakeFriends', 'Profile', 'SetGenderSide'].includes(routeName)">
-            <a v-if="showMore" style="z-index:1;right:50px" class="P(abs) B(0) Cur(p)" @click="showMore = false">
+            <a v-if="showMore" style="z-index:1;right:50px" class="P(abs) B(0) Cur(p) info-button" @click="showMore = false">
                 <img style="width:30px" src="/icon/collapse.svg" alt="">            
             </a>
             <div class="D(flex) W(100) Pb(50px) H(100) Of(scroll) Fd(column)" style="padding-bottom: 84px"
@@ -32,11 +33,11 @@
                                 v-if="nextArrowHover" alt="next">
                         </div>
                         <div v-if="routeName == 'MakeFriends' && !showMore" class="info Pl(5%)">
-                            <a class="P(abs) Cur(p)" style="top:10px;right:50px" v-if="routeName === 'MakeFriends'" @click="showMore = !showMore">
-                                <img style="width:30px;transform: rotate(180deg);" src="/icon/expand.svg" alt="">            
+                            <a class="P(abs) Cur(p) info-button" style="top:10px;right:20px" v-if="routeName === 'MakeFriends'" @click="showMore = !showMore">
+                                <img style="width:25px;transform: rotate(180deg);" src="/icon/expand.svg" alt="">            
                             </a>
-                            <span class="row">
-                                <h2 class="Color(white)" v-if="person.name">{{ person.name }}</h2><h3 class="Color(white)" v-if="person.age">{{ '  '+ person.age }}</h3>
+                            <span class="row D(flex)" style="max-width:80%">
+                                <h2 class="Color(white) Fs(medium) auto-collapse Margin(0)" v-if="person.name">{{ person.name }}</h2><h2 class="Color(white) Fs(medium) Margin(0)" v-if="person.age">{{ '  '+ person.age }}</h2>
                             </span>
                             <span v-if="person.hometown" class="D(flex) Align(baseline) row mt(12px)">
                                 <img class="Sq(14px) Filter(white)" v-bind:src="iconLocation">
@@ -71,9 +72,10 @@
                         </div>
                     </div>
                     <div v-if="routeName == 'MakeFriends' && !showMore" class="foreground"></div>
-                    <div v-if="routeName == 'MakeFriends' && !showMore"
+                    <div class="tools-container"
+                        v-if="routeName == 'MakeFriends' && !showMore"
                         v-bind:class="{'black-background': !showMore}"
-                     class="tools-container">
+                    >
                         <button style="border-color:#106bd5" class="normal-button Us(none) Cur(p)">
                             <img style="max-width:24px" src="/icon/repeat.svg" alt="">
                         </button>
@@ -138,6 +140,7 @@ export default {
     props: {
         personData: Object,
         isPersonalData: Boolean,
+        zIndex: Number,
     },
     methods: {
         ...mapActions({
@@ -517,10 +520,10 @@ img{
     width: 100%;
 }
 .foreground{
-    height: 68px;
+    height: 25%;
     width: 100%;
     position: absolute;
-    bottom: 84px;
+    bottom: 83px;
     background-image: linear-gradient(to top, black,#fff0);
 }
 .tools-container{
@@ -538,10 +541,12 @@ img{
     padding-bottom: 5px;
 }
 .info{
+    z-index: 1;
     position: absolute;
-    height: 100%;
     width: 100%;
-    top: 60%;
+    min-height: 20%;
+    bottom: 0;
+    margin-bottom: 84px;
     display: flex;
     flex-flow: column;
     align-items: flex-start;
@@ -634,6 +639,11 @@ button{
 .button:hover{
     background: linear-gradient(-225deg,var(--color--brand-coral),var(--color--brand-hot-pink));
 }
+
+.info-button:hover{
+    transform: scale(1.1);
+}
+
 a{
     text-decoration: none;
 }
@@ -641,7 +651,16 @@ a{
     margin-top: 5px;
     user-select: none;
 }
+
+.auto-collapse{
+    padding-right: 5px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
 .info-text{
+    font-size: 1rem;
     margin-left: 5px;
     color: #505965;
 }

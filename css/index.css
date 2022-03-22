@@ -93,6 +93,14 @@ form {
     font-size: 0.9rem;
 }
 
+.Fs\(medium\) {
+    font-size: 1.4rem;
+}
+
+.Fs\(large\) {
+    font-size: 1.9rem;
+}
+
 .Align\(baseline\) {
     align-items: baseline;
 }
