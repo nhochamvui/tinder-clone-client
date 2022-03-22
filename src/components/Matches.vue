@@ -4,14 +4,18 @@
     <slot name="header"></slot>
   </div>
   <section class="matches__section">
-    <img 
-    v-for="match of matchesGetSet"
-    v-bind:key="match.id"
-    v-on:click="openChat(match)"
-    v-on:error="onError"
-    class="match-card link Cur(p) Of(cover) Us(none)"
-    v-bind:src="match.profileImages[0]" alt="profile_picture"
-    >
+    <div v-for="match of matchesGetSet" v-bind:key="match.id" class="match-card link Cur(p)">
+      <img 
+        v-on:click="openChat(match)"
+        v-on:error="onError"
+        class="match-card Of(cover) Us(none)"
+        v-bind:src="match.profileImages[0]" alt="profile_picture"
+      >
+      <div class="foreground">
+        {{match.name}}
+      </div>
+    </div>
+    
   </section>
 </div>
 </template>
@@ -85,11 +89,28 @@ section {
   padding-right: 15px;
 }
 .match-card {
+  position: relative;
   width: 100%;
   height: 125px;
   background-position: center;
   background-size: cover;
   border-radius: 5px;
+}
+
+.foreground{
+  border-radius: 5%;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  color: white;
+  font-size: medium;
+  font-weight: 700;
+  padding-left: 5px;
+  padding-bottom: 5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  background-image: linear-gradient(0deg,#00000080,#fff0);
 }
 
 @media screen and (max-width: 749px){

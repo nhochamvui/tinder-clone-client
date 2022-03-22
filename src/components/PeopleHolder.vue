@@ -265,24 +265,24 @@ export default {
 
             let dragElement = this.$refs['card'];
 
-            if(dragElement.style.animation === ''){
+            if(dragElement.style.animationName === ''){
                 dragElement.style.animation = "swipe-right-rotate 0.4s ease forwards";
             }
 
             setTimeout(() => {
                 this.$emit('onLikeClick', result.match);
-            }, 440);
+            }, 405);
         }, 
         onDislikeClick(){
-            // this.dislikePerson(this.person.userID)
+            this.dislikePerson(this.person.userID)
             let dragElement = this.$refs['card'];
             console.log('onDislikeClick',dragElement.style)
-            if(dragElement.style.animation === ''){
+            if(dragElement.style.animationName === ''){
                 dragElement.style.animation = "swipe-left-rotate 0.4s ease forwards";
             }
             setTimeout(() =>{
                 this.$emit('onDislikeClick', this.person.id);
-            }, 440);
+            }, 405);
         },
         showArrowButton(){
             if(this.isShowNextButton){
@@ -407,6 +407,7 @@ export default {
 @keyframes swipe-right {
     100% {
         left: 120vw;
+        opacity: 0;
     }
 }
 

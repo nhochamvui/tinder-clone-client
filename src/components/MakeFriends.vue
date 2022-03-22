@@ -283,4 +283,9 @@ export default {
   max-width: 375px;
   height: 100%;
 }
+@media screen and (max-width: 749px){
+  .makefriend-body {
+    background: white;
+  }
+}
 </style>
