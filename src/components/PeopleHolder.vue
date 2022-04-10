@@ -375,7 +375,6 @@ export default {
     },
     watch: {
         profileImages: function(newValue, oldValue){
-            console.log('profileImages changes: ', oldValue, newValue)
             if(oldValue.length == 0 && newValue.length > 0){
                 this.photoIndexGetSet = 0;
             }

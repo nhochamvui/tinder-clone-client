@@ -424,10 +424,10 @@ export default {
 .inactive-item{
   /* opacity: 0; */
   background-color: white;
-  border: #e6eaf0 solid 1px;
+  border: var(--gray40) solid 1px;
 }
 .inactive-bg{
-  background-color: #e6eaf0;
+  background-color: var(--gray40);
 }
 .margin-top-bottom {
   padding-top: 8%;
@@ -453,7 +453,7 @@ export default {
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  border: #e6eaf0 solid 1.2px;
+  border: var(--gray40) solid 1.2px;
   background-color: #fff;
   box-shadow: 0 2px 6px 0 rgb(102 113 128 / 14%);
   cursor: grab;
@@ -465,7 +465,7 @@ export default {
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  border: #e6eaf0 solid 1.2px;
+  border: var(--gray40) solid 1.2px;
   background-color: #fff;
   box-shadow: 0 2px 6px 0 rgb(102 113 128 / 14%);
   cursor: grab;
@@ -498,7 +498,7 @@ export default {
   height: 28px;
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  border: #e6eaf0 solid 1.2px;
+  border: var(--gray20) solid 1.2px;
   background-color: #fff;
   z-index: 1;
   cursor: grab;
@@ -612,7 +612,7 @@ export default {
   padding-right: 5%;
   padding-top: 5%;
   padding-bottom: 5%;
-  border-bottom: #e6eaf0 solid 1px;
+  border-bottom: var(--gray30) solid 1px;
   background-color: #fff;
 }
 .settings__box--row {
