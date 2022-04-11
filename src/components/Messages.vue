@@ -3,7 +3,7 @@
     <div class="chat" v-if="matchId">
       <div class="match__info">
         <div class="match__avatar">
-          <Image class="avatar Of(cover)" v-bind:imgSrc="matchAvatar" v-bind:altString="'mini_avatar'"></Image>
+          <Image v-if="currentMatch" class="avatar Of(cover)" v-bind:imgSrc="currentMatch.profileImages[0]" v-bind:altString="'mini_avatar'"></Image>
           <div class="match__date" v-if="currentMatch" v-text="'You matched with ' + currentMatch.name + ' on ' + dateOfMatch"></div>
         </div>
         <a class="close__button Cur(p)" @click="$router.go(-1)">
@@ -439,7 +439,7 @@ form{
   height: 74px;
   width: 100%;
   bottom: 0;
-  border-top: #e6eaf0 solid 1px;
+  border-top: var(--gray40) solid 1px;
   /* display: flex;
   align-items: center; */
   display: grid;
@@ -519,7 +519,7 @@ form{
 }
 .close__button--img{
   transition: transform .2s ease;
-  filter: invert(87%) sepia(4%) saturate(1151%) hue-rotate(195deg) brightness(111%) contrast(88%);
+  filter: invert(73%) sepia(28%) saturate(133%) hue-rotate(177deg) brightness(92%) contrast(86%);
 }
 .close__button--img:hover{
   transform: rotate(-90deg);
