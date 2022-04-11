@@ -106,11 +106,9 @@ const store = createStore({
                 state.latestMessages[value.index].toID = value.toID;
                 state.latestMessages[value.index].content = value.content;
                 state.latestMessages[value.index].timeStamp = value.timestamp;
-                console.log('before: ', state.latestMessages);
                 state.latestMessages.sort((m1, m2) => {
                     return m2.timeStamp - m1.timeStamp
                 });
-                console.log('after: ', state.latestMessages)
             }
         },
         SET_CONNECTION(state, connection) {
