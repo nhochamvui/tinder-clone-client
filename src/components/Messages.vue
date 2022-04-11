@@ -237,9 +237,11 @@ export default {
         getConnection: "getConnection",
         getHostPhotosURL: "getHostPhotosURL",
         getWindowWidth: "getWindowWidth",
+        getLatestMessages: "getLatestMessages",
       }),
       ...mapActions({
         fetchMessagesByID: 'fetchMessagesByID',
+        fetchLatestMessages: "fetchLatestMessages",
         fetchMatches: 'fetchMatches',
       }),
       submitMesssage(message){
@@ -356,6 +358,11 @@ export default {
           // co tin nhan moi
           // this.messages.push(message);
           this.renderMessage(message, false);
+          let latestMessages = this.getLatestMessages();
+          if(latestMessages.findIndex(x => (x.fromID == message.fromID && x.toID == message.toID) 
+          || (x.toID == message.fromID && x.fromID == message.toID)) == -1){
+            this.fetchLatestMessages();
+          }
         });
 
         this.getConnection().on('NewMatch', (matchInfo) => {

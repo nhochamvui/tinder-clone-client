@@ -131,7 +131,7 @@ export default {
                 me &&
                 me.email &&
                 me.gender &&
-                me.birthday.length == 10
+                me.birthday && me.birthday.length == 10
             ) {
                 me['accessToken'] = authResponse.accessToken;
                 this.handleSignup(me);
@@ -227,6 +227,8 @@ export default {
     created: function () {
     },
     mounted: function () {
+        console.log('mounted login')
+        this.showModal = false;
         this.init();
     },
 };

@@ -10,7 +10,7 @@
     </div>
 
     <div
-        v-for="message of messageList"
+        v-for="(message) of messageList"
         v-bind:key="(matchInfo = getMatchInfo(message.fromID, message.toID))"
         class="messagelist__container"
     >
@@ -97,9 +97,8 @@ export default {
     computed: {
         messageList: {
             get() {
-                console.log("get messagelist");
-                let list = this.getLatestMessages();
-                return list;
+                console.log("get messagelist:", this.getLatestMessages());
+                return this.getLatestMessages();
             },
         },
         windowWidth: {

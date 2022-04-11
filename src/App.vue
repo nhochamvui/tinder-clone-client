@@ -121,7 +121,7 @@ export default {
                         resolve();
                     });
                 });
-                if (newValue === "") {
+                if (newValue === "" || newValue == undefined) {
                     let fbToken = await getFBToken;
                     if(fbToken){
                         const res = await this.doFbAuth(fbToken);
@@ -129,7 +129,7 @@ export default {
                             this.setToken(res.accessToken);
                         }
                         else{
-                            FB.api("/me/permissions", "delete", null, () =>{ FB.logout();} );
+                            FB.api("/me/permissions", "delete", null, FB.logout() );
                             this.$router.push({name: "Authenticate", params: { action: "login" }});
                         }
                     }
@@ -200,6 +200,7 @@ export default {
             createConnection: "createConnection",
             unLoadUser: "users/unLoadUser",
             doFbAuth: "doFbAuth",
+            doFbLogout: "doFbLogout",
         }),
         getProfileImage(){
             return this.me.profileImage.find(e => e !== '');

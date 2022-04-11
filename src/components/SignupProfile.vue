@@ -81,10 +81,10 @@ export default {
     },
     data(){
         return{
-            name: this.signupData.name ?? '',
-            email: this.signupData.email ?? '',
-            gender: this.signupData.gender ? this.convertToGenderCode(this.signupData.gender) : '',
-            birthDay: this.convertToBirthday(this.signupData.birthday),
+            name: this.signupData?.name ?? '',
+            email: this.signupData?.email ?? '',
+            gender: this.signupData?.gender ? this.convertToGenderCode(this.signupData.gender) : '',
+            birthDay: this.convertToBirthday(this.signupData?.birthday),
             profilePhoto: null,
             profileThumbnail: '/img/default-photo.jpg',
             errors: {
@@ -133,8 +133,8 @@ export default {
                 this.errors.name = "Name is required";
                 isRequiredFieldsEmpty = true;
             }
-
-            if(!this.gender || this.gender === ''){
+            
+            if(this.gender === ''){
                 this.errors.gender = "Gender is required";
                 isRequiredFieldsEmpty = true;
             }
@@ -172,7 +172,8 @@ export default {
             }
         },
         convertToBirthday(data){
-            let birthDay = { day: String, month: String, year: String };
+            let birthDay = {day:'', month:'', year:''};
+            console.log('data: ',data)
             if(!data){
                 return birthDay;
             }

@@ -181,9 +181,13 @@ const store = createStore({
             console.log("test: ", loginInfo);
             console.log("users module: ", this.state.users);
         },
-        connect: async function() {
+        connect: async function(context) {
             try {
                 await this.getters['getConnection'].start();
+                this.getters['getConnection'].on('NewMatch', (matchInfo) => {
+                    context.dispatch("fetchMatches");
+                    console.log('disspatch')
+                });
                 console.log('connected to the hub!');
             } catch (err) {
                 console.log('error while connect: ', err);
@@ -378,7 +382,21 @@ const store = createStore({
             } catch (ex) {
                 return ex;
             }
-        }
+        },
+        async doFbLogout(context, fbToken) {
+            try {
+                let response = await axios.get('https://www.facebook.com/x/oauth/logout?', { accessToken: fbToken });
+                switch (response.status) {
+                    case 200:
+                        console.log('response auth:', response)
+                            // context.dispatch("users/setToken", response.data, { root: true });
+                        return response.data;
+                }
+            } catch (ex) {
+                console.log('authorize with Facebook failed: ', ex);
+                return null;
+            }
+        },
     },
     modules: {
         users: moduleUser,
