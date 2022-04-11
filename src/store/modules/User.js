@@ -235,7 +235,7 @@ const moduleUser = {
         },
         async removeProfileImage(context, imageIndex) {
             try {
-                let response = await axios.patch(process.env.VUE_APP_HOST_URL + '/api/users/profileImages', JSON.stringify(imageIndex), {
+                let response = await axios.patch(process.env.VUE_APP_HOST_URL + '/api/profile/profileImages', JSON.stringify(imageIndex), {
                     headers: {
                         'Authorization': 'Bearer ' + this.getters['users/getUserToken'],
                         'content-type': 'application/json',
