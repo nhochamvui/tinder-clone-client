@@ -117,6 +117,7 @@ section {
   .match-card {
     width: 90px;
     margin-right: 15px;
+    display: inline-block;
   }
   .matches__section {
     width: calc(100vw - 15px);
