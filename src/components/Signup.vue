@@ -2,7 +2,7 @@
     <div class="signup-container">
         <div class="signup__section">
             <h1 class="heading">CREATE ACCOUNT</h1>
-            <form class="signup__form" v-on:submit="onSubmit">
+            <form class="signup__form" v-on:submit.stop.prevent="onSubmit">
                 <div class="signup__field">
                     <label>Full Name <span>*</span></label>
                     <input type="text" v-model.trim="form.name" placeholder="Your name" />

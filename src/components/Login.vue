@@ -10,7 +10,7 @@
         v-if="routeName !== 'Authenticate'"
         name="replace"
         v-bind:signup-data="signupData"
-        v-on:submit="(e) => onSignupFormSubmit(e)"
+        v-on:submit="(e) => routeName === 'SignupProfile' ? onSignupFormSubmit(e) : null"
     />
     <div v-else class="D(flex) Fd(column) W(100%) H(100%)">
         <!-- <h1>Login Page</h1>
