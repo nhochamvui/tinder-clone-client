@@ -52,6 +52,18 @@
                 <div v-if="isLogging" class="spinner"></div>
             </button>
             <hr class="W(100%)">
+            <form class="login__form D(flex) Fd(column) Al(center) W(100%)" v-on:submit="onSubmit">
+                <input type="text" class="login__input" v-model.trim="loginInfo.user_name" placeholder="Username or email" />
+                <input type="password" class="login__input" v-model="loginInfo.password" placeholder="Password" />
+                <div v-if="loginError" class="error-text">{{ loginError }}</div>
+                <button type="submit" class="button D(flex) Fd(row) Al(center) Jc(center) Cur(p)">
+                    <span class="button__label">LOG IN</span>
+                </button>
+            </form>
+            <p class="Ta(center) mb(12px)">
+                Don't have an account?
+                <a class="login__link Cur(p)" v-on:click="goToSignup">Create account</a>
+            </p>
             <h1 class="heading">COMING SOON IN 2023!</h1>
             <div class="logo__container D(flex) W(100%) Fd(row) Jc(space-between) Al(center)">
                 <Image v-bind:altString="'app store logo'" v-bind:imgSrc="'/img/appstore-logo.png'" style="height:48px;object-fit:contain"/>
@@ -90,6 +102,7 @@ export default {
             isLogging: false,
             showModal: false,
             errorText: '',
+            loginError: '',
         }
     },
     computed: {
@@ -176,6 +189,7 @@ export default {
         },
         async onSubmit(event) {
             event.preventDefault();
+            this.loginError = '';
             const objectParam = {
                 userName: this.loginInfo.user_name,
                 password: this.loginInfo.password,
@@ -185,16 +199,20 @@ export default {
                     process.env.VUE_APP_HOST_URL +"/api/users/login",
                     objectParam
                 );
-                this.loginInfo.user_name = "unclebob";
-                this.loginInfo.password = "1234";
 
-                this.setToken(response.data);
+                this.setToken(response.data.accessToken);
 
                 console.log("after login, going to App... ", response.data);
                 this.$router.push({ name: "MakeFriends" });
             } catch (err) {
                 console.log("error while login: ", err);
+                this.loginError = err.response && err.response.data && err.response.data.message
+                    ? err.response.data.message
+                    : "Login failed. Please try again.";
             }
+        },
+        goToSignup() {
+            this.$router.push({ name: "SimpleSignup" });
         },
         async init() {
             console.log("init login.vue");
@@ -305,6 +323,33 @@ label {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.login__form{
+    gap: 10px;
+}
+
+.login__input{
+    width: 90%;
+    max-width: 315px;
+    height: 44px;
+    padding-left: 14px;
+    padding-right: 14px;
+    border: gray 1px solid;
+    border-radius: 100px;
+    font-size: 0.95rem;
+    box-sizing: border-box;
+}
+
+.login__input:hover,
+.login__input:focus{
+    border: black 1px solid;
+    outline: none;
+}
+
+.login__link{
+    color: var(--primaryColor);
+    font-weight: bold;
 }
 </style>
 

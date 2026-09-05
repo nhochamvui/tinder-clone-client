@@ -44,6 +44,13 @@ const routes = [{
                 replace: () =>
                     import ( /* webpackChungName: "SignupProfile" */ "../components/SignupProfile.vue")
             }
+        }, {
+            name: "SimpleSignup",
+            path: '/authenticate/register',
+            components: {
+                replace: () =>
+                    import ( /* webpackChunkName: "Signup" */ "../components/Signup.vue")
+            }
         }, ]
     },
     {
