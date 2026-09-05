@@ -4,6 +4,10 @@
             <h1 class="heading">CREATE ACCOUNT</h1>
             <form class="signup__form" v-on:submit.stop.prevent="onSubmit">
                 <div class="signup__field">
+                    <label>Username <span>*</span></label>
+                    <input type="text" v-model.trim="form.username" placeholder="Choose a username" />
+                </div>
+                <div class="signup__field">
                     <label>Full Name <span>*</span></label>
                     <input type="text" v-model.trim="form.name" placeholder="Your name" />
                 </div>
@@ -56,6 +60,7 @@ export default {
     data() {
         return {
             form: {
+                username: "",
                 name: "",
                 email: "",
                 password: "",
@@ -82,14 +87,15 @@ export default {
             if (this.isSubmitting) return;
 
             this.errorText = "";
-            if (!this.form.name || !this.form.password || !this.form.gender || !this.form.birthday || !this.photo) {
-                this.errorText = "Please fill in all required fields (name, password, gender, birthday, photo).";
+            if (!this.form.username || !this.form.name || !this.form.password || !this.form.gender || !this.form.birthday || !this.photo) {
+                this.errorText = "Please fill in all required fields (username, name, password, gender, birthday, photo).";
                 return;
             }
 
             this.isSubmitting = true;
 
             const bodyFormData = new FormData();
+            bodyFormData.append("UserName", this.form.username);
             bodyFormData.append("Name", this.form.name);
             bodyFormData.append("Email", this.form.email);
             bodyFormData.append("Password", this.form.password);
