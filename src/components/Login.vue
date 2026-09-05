@@ -118,7 +118,7 @@ export default {
             const authResponse = FB.getAuthResponse();
             if (!authResponse) {
                 FB.login(this.loginCallback, {
-                    scope: "email,user_birthday,user_gender",
+                    scope: "email,public_profile",
                     return_scopes: true,
                 });
             } else {
@@ -127,19 +127,9 @@ export default {
         },
         afterLoginCallback: function (me, authResponse) {
             console.log("afterlogincallback:", me);
-            if (
-                me &&
-                me.email &&
-                me.gender &&
-                me.birthday && me.birthday.length == 10
-            ) {
-                me['accessToken'] = authResponse.accessToken;
-                this.handleSignup(me);
-            } else {
-                this.signupData = me;
-                this.fbAccessToken = authResponse.accessToken;
-                this.$router.push({ name: "SignupProfile" });
-            }
+            this.signupData = me;
+            this.fbAccessToken = authResponse.accessToken;
+            this.$router.push({ name: "SignupProfile" });
         },
         loginCallback: async function (response) {
             let authResponse = response.authResponse;
@@ -155,7 +145,7 @@ export default {
                             "get",
                             {
                                 access_token: authResponse.accessToken,
-                                fields: "email,name,gender,birthday,picture",
+                                fields: "email,name,picture",
                             },
                             (me) => this.afterLoginCallback(me, authResponse)
                         );

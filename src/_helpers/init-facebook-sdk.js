@@ -8,7 +8,7 @@ export function initFacebookSdk() {
                 appId: facebookAppId,
                 cookie: true,
                 xfbml: true,
-                version: 'v13.0'
+                version: 'v25.0'
             });
             resolve();
         };
