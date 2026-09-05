@@ -24,6 +24,7 @@
                     !isLoading ||
                     routeName === 'Authenticate' ||
                     routeName === 'SignupProfile' ||
+                    routeName === 'SimpleSignup' ||
                     routeName === 'Privacy'"
             >
                 <router-view/>
