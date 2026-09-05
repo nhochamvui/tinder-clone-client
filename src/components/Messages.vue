@@ -81,7 +81,7 @@ export default {
     data(){
       const signalR = require('@microsoft/signalr');
       const conn = new signalR.HubConnectionBuilder()
-              .withUrl("https://localhost:5001/chat", {accessTokenFactory: () => this.getUserToken()})
+              .withUrl(process.env.VUE_APP_HOST_URL + "/chat", {accessTokenFactory: () => this.getUserToken()})
               .configureLogging(signalR.LogLevel.Information)
               .build();
       return {
