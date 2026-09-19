@@ -56,13 +56,15 @@
                 <input type="text" class="login__input" v-model.trim="loginInfo.user_name" placeholder="Username or email" />
                 <input type="password" class="login__input" v-model="loginInfo.password" placeholder="Password" />
                 <div v-if="loginError" class="error-text">{{ loginError }}</div>
-                <button type="submit" class="button D(flex) Fd(row) Al(center) Jc(center) Cur(p)">
-                    <span class="button__label">LOG IN</span>
+                <button type="submit" v-bind:disabled="isSubmitting"
+                    class="button D(flex) Fd(row) Al(center) Jc(center) Cur(p)">
+                    <span v-if="!isSubmitting" class="button__label">LOG IN</span>
+                    <div v-if="isSubmitting" class="spinner"></div>
                 </button>
             </form>
             <p class="Ta(center) mb(12px)">
                 Don't have an account?
-                <a class="login__link Cur(p)" v-on:click="goToSignup">Create account</a>
+                <router-link :to="{ name: 'SimpleSignup' }" class="login__link">Create account</router-link>
             </p>
             <h1 class="heading">COMING SOON IN 2023!</h1>
             <div class="logo__container D(flex) W(100%) Fd(row) Jc(space-between) Al(center)">
@@ -100,6 +102,7 @@ export default {
         return{
             test: 'hello',
             isLogging: false,
+            isSubmitting: false,
             showModal: false,
             errorText: '',
             loginError: '',
@@ -189,6 +192,10 @@ export default {
         },
         async onSubmit(event) {
             event.preventDefault();
+            if (this.isSubmitting) {
+                return;
+            }
+            this.isSubmitting = true;
             this.loginError = '';
             const objectParam = {
                 userName: this.loginInfo.user_name,
@@ -209,10 +216,9 @@ export default {
                 this.loginError = err.response && err.response.data && err.response.data.message
                     ? err.response.data.message
                     : "Login failed. Please try again.";
+            } finally {
+                this.isSubmitting = false;
             }
-        },
-        goToSignup() {
-            this.$router.push({ name: "SimpleSignup" });
         },
         async init() {
             console.log("init login.vue");
@@ -284,6 +290,11 @@ export default {
     color: black;
 }
 
+.button:disabled{
+    opacity: 0.6;
+    cursor: default;
+}
+
 .button__icon{
     width: 15%;
 }
@@ -348,8 +359,18 @@ label {
 }
 
 .login__link{
-    color: var(--primaryColor);
+    color: var(--blue50);
     font-weight: bold;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.login__link:visited{
+    color: var(--blue50);
+}
+
+.login__link:hover{
+    color: var(--blue40);
 }
 </style>
 
