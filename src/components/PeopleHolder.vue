@@ -96,7 +96,7 @@
         <div v-if="['Profile', 'SetGenderSide'].includes(routeName) " class="P(abs) B(0) Pb(10px) D(flex) Js(center) H(40px) W(100)"
             style="background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(252,252,252,0.896796218487395) 14%, rgba(255,252,247,0) 100%);"
         >
-            <router-link class="button" :to="{ name: 'ProfileEdit' }">
+            <router-link class="button button--brand" :to="{ name: 'ProfileEdit' }">
                 <span>Edit Info</span>
             </router-link>
         </div>
@@ -631,12 +631,8 @@ button{
     padding-left: 24px;
     padding-right: 24px;
     border-radius: 30px;
-    background: linear-gradient(225deg,var(--color--brand-coral),var(--color--brand-hot-pink));
     cursor: pointer;
     box-shadow: 0 1px 6px 0 rgb(0 0 0 / 27%);
-}
-.button:hover{
-    background: linear-gradient(-225deg,var(--color--brand-coral),var(--color--brand-hot-pink));
 }
 
 .info-button:hover{

@@ -57,6 +57,7 @@
                 <input type="password" class="login__input" v-model="loginInfo.password" placeholder="Password" />
                 <div v-if="loginError" class="error-text">{{ loginError }}</div>
                 <button type="submit" v-bind:disabled="isLoginDisabled"
+                    :class="{ 'button--brand': hasLoginCredentials }"
                     class="button D(flex) Fd(row) Al(center) Jc(center) Cur(p)">
                     <span v-if="!isSubmitting" class="button__label">LOG IN</span>
                     <div v-if="isSubmitting" class="spinner"></div>
@@ -113,7 +114,10 @@ export default {
             return this.$route.name;
         },
         isLoginDisabled: function () {
-            return this.isSubmitting || !this.loginInfo.user_name || !this.loginInfo.password;
+            return this.isSubmitting || !this.hasLoginCredentials;
+        },
+        hasLoginCredentials: function () {
+            return !!(this.loginInfo.user_name && this.loginInfo.password);
         },
     },
     methods: {
@@ -259,8 +263,8 @@ export default {
 .spinner{
     width: 45px;
     height: 45px;
-    border: black 5px solid;
-    border-color: black black transparent transparent;
+    border: currentColor 5px solid;
+    border-color: currentColor currentColor transparent transparent;
     border-radius: 50%;
     animation: spin 0.85s linear infinite;
 }
@@ -285,21 +289,27 @@ export default {
     width: 315px;
     min-height: 54px;
     border-radius: 100px;
-    background-color: white;
     margin-top: 10px;
     margin-bottom: 10px;
+}
+
+.button:not(.button--brand){
+    background-color: white;
     border: gray 1px solid;
     color: gray;
 }
 
-.button:hover{
+.button:not(.button--brand):hover{
     border: black 1px solid;
     color: black;
 }
 
 .button:disabled{
-    opacity: 0.6;
     cursor: default;
+}
+
+.button:not(.button--brand):disabled{
+    opacity: 0.6;
 }
 
 .button__icon{

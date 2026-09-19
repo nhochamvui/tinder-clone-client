@@ -68,6 +68,18 @@ form {
     cursor: pointer;
 }
 
+.button.button--brand {
+    background: linear-gradient(225deg, var(--color--brand-coral), var(--color--brand-hot-pink));
+    border: none;
+    color: #fff;
+}
+
+.button.button--brand:hover:not(:disabled) {
+    background: linear-gradient(-225deg, var(--color--brand-coral), var(--color--brand-hot-pink));
+    border: none;
+    color: #fff;
+}
+
 .Va\(m\) {
     vertical-align: middle;
 }
