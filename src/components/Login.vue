@@ -56,7 +56,7 @@
                 <input type="text" class="login__input" v-model.trim="loginInfo.user_name" placeholder="Username or email" />
                 <input type="password" class="login__input" v-model="loginInfo.password" placeholder="Password" />
                 <div v-if="loginError" class="error-text">{{ loginError }}</div>
-                <button type="submit" v-bind:disabled="isSubmitting"
+                <button type="submit" v-bind:disabled="isLoginDisabled"
                     class="button D(flex) Fd(row) Al(center) Jc(center) Cur(p)">
                     <span v-if="!isSubmitting" class="button__label">LOG IN</span>
                     <div v-if="isSubmitting" class="spinner"></div>
@@ -111,6 +111,9 @@ export default {
     computed: {
         routeName: function () {
             return this.$route.name;
+        },
+        isLoginDisabled: function () {
+            return this.isSubmitting || !this.loginInfo.user_name || !this.loginInfo.password;
         },
     },
     methods: {
@@ -195,8 +198,12 @@ export default {
             if (this.isSubmitting) {
                 return;
             }
-            this.isSubmitting = true;
             this.loginError = '';
+            if (!this.loginInfo.user_name || !this.loginInfo.password) {
+                this.loginError = 'Please enter your username and password.';
+                return;
+            }
+            this.isSubmitting = true;
             const objectParam = {
                 userName: this.loginInfo.user_name,
                 password: this.loginInfo.password,
